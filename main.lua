@@ -1,9 +1,9 @@
 
---[[--------------------[[--
-  made by ed/ilikecreepers
-  Feel free to use my code
-  but do not copy my game.
---]]--------------------]]--
+--[[----------------------------[[--
+  made by bobbobson21/ilikecreepers
+   Feel free to use my code but do
+         not copy my game.
+--]]----------------------------]]--
 
 	local windowtitle = "untitled"
 	local devfont = "dev_font"
