@@ -24,7 +24,7 @@ end
 return 3
 end
 
-emitentitytype( "point_hud", {["loadresources"]=ENT.loadresources,["init"]=ENT.init,["onremove"]=ENT.onremove,["think"]=ENT.think,["draw"]=ENT.draw,["mousepress"]=ENT.mousepress,["keypress"]=ENT.keypress,} )
+emitentitytype( "point_hud", ENT )
 
 	local ent = spawnentity( "point_hud", "hud" )
 	ent.active = 0

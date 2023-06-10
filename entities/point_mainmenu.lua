@@ -379,7 +379,7 @@ end
    end
 end
 
-emitentitytype( "point_mainmenu", {["loadresources"]=ENT.loadresources,["init"]=ENT.init,["onremove"]=ENT.onremove,["think"]=ENT.think,["draw"]=ENT.draw,["mousepress"]=ENT.mousepress,["keypress"]=ENT.keypress,} )
+emitentitytype( "point_mainmenu", ENT )
 
 	local ent = spawnentity( "point_mainmenu", "mainmenu" )
 

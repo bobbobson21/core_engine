@@ -1,7 +1,7 @@
 	
 	loadingsystem = {["title"]=gamewindowtitle()}
 
-function loadingsystem.register( name, text, percent, func )
+function loadingsystem.register( name, text, percent, func ) --to create blocks of content to load and the name is the name of the loading stage and text is text used to display what is loading percent is how much is loaded function is where you put the files to load also put XresourcesX into name to load the resouces used in the files
 if loadingsystem["toload"] == nil then loadingsystem["toload"] = {} end
 if loadingsystem["fromload"] == nil then loadingsystem["fromload"] = 0 end
 if loadingsystem["loadcount"] == nil then loadingsystem["loadcount"] = 0 end
@@ -16,7 +16,7 @@ if loadingsystem["startupt"] == nil then loadingsystem["startupt"] = 20 end
 	loadingsystem["toload"][name][5] = loadingsystem["loadcount"]
 end
 
-function loadingsystem.fakeload( text, apercent, bgca, fgca, drl )
+function loadingsystem.fakeload( text, apercent, bgca, fgca, drl ) --for fake loading screens
 	local bgc = bgca or {["r"]=0,["g"]=0,["b"]=0,["a"]=0}
 	local fgc = fgca or {["r"]=255,["g"]=255,["b"]=255,["a"]=255}
 	local percent = apercent or 100
@@ -50,9 +50,9 @@ function loadingsystem.init( self )
 	loadingsystem["startupt"] = 0
 end
 
-function loadingsystem.think( self )
+function loadingsystem.think( self ) 
 if loadingsystem["lastloaded"] == nil then loadingsystem["lastloaded"] = 0 end
-if loadingsystem["complete"] == true then
+if loadingsystem["complete"] == true then --dose loading screen animations
 if loadingsystem["alpha"] == nil then loadingsystem["alpha"] = 1 end
 if loadingsystem["whiteness"] == nil then loadingsystem["whiteness"] = 0 end
 
@@ -62,7 +62,7 @@ if loadingsystem["whiteness"] == nil then loadingsystem["whiteness"] = 0 end
 if loadingsystem["alpha"] <= 0 then removeentity( self ) end
 end
 
-if loadingsystem["toload"] ~= nil and loadingsystem["complete"] ~= true then
+if loadingsystem["toload"] ~= nil and loadingsystem["complete"] ~= true then --loades content and updates loading display
 	local loaddone = 0
 for k,v in pairs( loadingsystem["toload"] ) do
 if v[6] == true then loaddone = loaddone +1 end
@@ -72,7 +72,7 @@ if emittime() >= v[4] and v[6] ~= true and loadingsystem["lastloaded"] == v[5] -
 	loadingsystem["loadingbartext"] = v[2]
     loadingsystem["loadingbarscale"] = ( math.min( v[3], 100 ) /100 ) *( ( love.graphics.getWidth() /1.20 ) -16 )
 	v[1]()
-if string.find( k, "XresourcesX" ) ~= nil then
+if string.find( k, "XresourcesX" ) ~= nil then --loades resouces
 runhook( "loadresourcetypes", {} )
 if entities ~= nil then
 for k,v in pairs( entities["mainfuncs"] ) do
@@ -99,7 +99,7 @@ if loaddone == loadingsystem["loadcount"] then
    end
 end
 
-function loadingsystem.draw( self )
+function loadingsystem.draw( self ) 
 if self.resources == nil and next( getresources() ) ~= nil then self.resources = getresources() end
 if self.resources ~= nil and self.active ~= 0 then
 if loadingsystem["alpha"] == nil then loadingsystem["alpha"] = 1 end
@@ -128,7 +128,7 @@ end
 return ">"
 end
 
-emitentitytype( "loader", {["loadresources"]=loadingsystem.loadresources,["init"]=loadingsystem.init,["onremove"]=loadingsystem.onremove,["think"]=loadingsystem.think,["draw"]=loadingsystem.draw,["mousepress"]=loadingsystem.mousepress,["keypress"]=loadingsystem.keypress,} )
+emitentitytype( "loader", loadingsystem )
 
 	local ent = spawnentity( "loader", "loaderent" )
 

@@ -3,15 +3,15 @@
 	
 function emitcam() return getentity( "obj_motioncamera", "cam" ) end
 
-function ENT.setcammotion( self, camman, x, y, ox, oy )
+function ENT.setcammotion( self, camman, x, y, ox, oy ) --set the entity the camera should be attached to ie the player
 	self.xsys, self.ysys, self.offsetx, self.offsety, self.cament = x, y, ox, oy, camman
 end
 
-function ENT.setcamboarders( self, minx, miny, maxx, maxy )
+function ENT.setcamboarders( self, minx, miny, maxx, maxy ) --creates a box extended from 0,0 which the camera can't leave 
 	self.mincamx, self.mincamy, self.maxcamx, self.maxcamy = minx, miny, maxx, maxy
 end
 
-function ENT.emitcampos( self )
+function ENT.emitcampos( self ) --returns the camera posistion
 if self.cament ~= nil then
 	local x = self.cament[self.xsys] +self.offsetx
 	local y = self.cament[self.ysys] +self.offsety
@@ -28,7 +28,7 @@ if self.lockcamy ~= nil then y = self.lockcamy end
 return 0, 0
 end
 
-function ENT.emitcamcoverage( self )
+function ENT.emitcamcoverage( self ) --returns the dimentions of a box which coveres the entire view area
 if self.cament ~= nil then
 	local x = self.cament[self.xsys] +self.offsetx
 	local y = self.cament[self.ysys] +self.offsety
@@ -45,7 +45,7 @@ if self.lockcamy ~= nil then y = self.lockcamy end
 return 0,0,0,0
 end
 
-function ENT.removefromcam( self )
+function ENT.removefromcam( self ) --use this to fix the rendering of something onto the screen ie use to make hud elements
 if self.cament ~= nil then
 	local x = self.cament.x +self.offsetx
 	local y = self.cament.y +self.offsety
@@ -62,7 +62,7 @@ love.graphics.translate( -( -( x ) +( love.graphics.getWidth() /2 ) ), -( -( y )
    end
 end
 
-function ENT.addtocam( self )
+function ENT.addtocam( self ) --use this to undo removefromcam changes AND YOU SHUOULD ALWAYS USE IT IF YOU ARE GOING TO USE removefromcam
 if self.cament ~= nil then
 	local x = self.cament[self.xsys] +self.offsetx
 	local y = self.cament[self.ysys] +self.offsety
@@ -79,11 +79,6 @@ love.graphics.translate( -( x ) +( love.graphics.getWidth() /2 ), -( y ) +( love
 end
 
 function ENT.init( self )
-	self.setcammotion = ENT.setcammotion
-	self.emitcamcoverage = ENT.emitcamcoverage
-	self.removefromcam = ENT.removefromcam
-	self.emitcampos = ENT.emitcampos
-	self.addtocam = ENT.addtocam
 	self.maxcamx = 9000
 	self.maxcamy = 9000
 	self.mincamx = -9000
@@ -144,7 +139,7 @@ love.graphics.translate( -( -( x ) +( love.graphics.getWidth() /2 ) ), -( -( y )
    end
 end
 
-emitentitytype( "obj_motioncamera", {["enddraw"]=ENT.enddraw,["loadresources"]=ENT.loadresources,["init"]=ENT.init,["onremove"]=ENT.onremove,["think"]=ENT.think,["draw"]=ENT.draw,["mousepress"]=ENT.mousepress,["keypress"]=ENT.keypress,} )
+emitentitytype( "obj_motioncamera", ENT )
 
 	local ent = spawnentity( "obj_motioncamera", "cam" )
 	

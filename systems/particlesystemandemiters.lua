@@ -1,7 +1,7 @@
 	
 	particlesystem = {}
 
-function particlesystem.adddepth( mind, maxd )
+function particlesystem.adddepth( mind, maxd ) --particles use there own render depth system which can be controlled here
 	local addedpartcore = false
 for z = mind, maxd do
 	local ent = spawnentity( "particleemiter", "partemiter_"..tostring( z ) )
@@ -11,18 +11,18 @@ if addedpartcore ~= true then ent.runparticlecore, addedpartcore = 1, true end
    end
 end
 
-function particlesystem.removeparticle( identifyer, confirm )
+function particlesystem.removeparticle( identifyer, confirm ) --removes a particle
 if identifyer == nil and confirm == true then
 for k,v in pairs( particlesystem.particles ) do runhook( "particle_onremove", {v} ) end
-mua.tableempty( particlesystem.particles )
+mua.tableempty( particlesystem.particles ) --removes all particles with confirmation
 end
 if identifyer ~= nil then
 runhook( "particle_onremove", particlesystem["particles"][identifyer] )
-	particlesystem["particles"][identifyer] = nil
+	particlesystem["particles"][identifyer] = nil --removes a particle with an identifyer
    end
 end
 
-function particlesystem.spawnparticles( identifyer )
+function particlesystem.spawnparticles( identifyer ) --spawns a particle
 if emittimesync() <= 2 then 
 if particlesystem.particles == nil then particlesystem.particles = {} end
 
@@ -45,7 +45,7 @@ return {}
    end
 end
 
-function particlesystem.getparticle( identifyer )
+function particlesystem.getparticle( identifyer ) --gets a particle
 if particlesystem.particles == nil then particlesystem.particles = {} end
 if identifyer ~= nil then
 return particlesystem.particles[identifyer]
@@ -54,12 +54,12 @@ else
    end
 end
 
-function particlesystem.emiteffect( identifyer, effect )
+function particlesystem.emiteffect( identifyer, effect ) --creates effects
 if particlesystem.effects == nil then particlesystem.effects = {} end
 particlesystem["effects"][identifyer] = effect
 end
 
-function particlesystem.spawneffect( identifyer, tbl )
+function particlesystem.spawneffect( identifyer, tbl ) --spawns effects
 if particlesystem.effects == nil then particlesystem.effects = {} end
 if particlesystem["effects"][identifyer] ~= nil then
 particlesystem["effects"][identifyer]( particlesystem.spawnparticles, tbl )
@@ -79,7 +79,7 @@ love.graphics.pop()
    end)
 end
 
-function particlesystem.think( self )
+function particlesystem.think( self ) --updates particles
 if self.runparticlecore == 1 then
 if emittime ~= nil then
 if particlesystem.particles == nil then particlesystem.particles = {} end
@@ -127,7 +127,7 @@ if particlesystem.particles ~= nil then
 for k,v in pairs( particlesystem.particles ) do
 if v.active ~= 0 and v.renderlevel == self.renderlevel then
 
-	local returned = {[1]=runhook( "particle_predraw", {v} ),}
+	local returned = {[1]=runhook( "particle_predraw", {v} ),} --use this to draw before all particles
 
 if returned[1] ~= nil then for k,v in pairs( returned[1] ) do if v == false then returned[2] = false end end end
 
@@ -142,7 +142,7 @@ v.renderable( v.r, v.g, v.b, v.a, v.x, v.y, v.ang, v.size )
    end
 end
 
-runhook( "particle_postdraw", {v} )
+runhook( "particle_postdraw", {v} ) --use this to draw after all particles
 
             end
          end

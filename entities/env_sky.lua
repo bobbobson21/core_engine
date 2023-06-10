@@ -1,7 +1,7 @@
 
 	local ENT = {}
 
-function ENT.resetclouds( self )
+function ENT.resetclouds( self ) --chages the sky background
 	self.clouds = {}
 	self.cloudsort = 0
 	self.cloudsuncliped = false
@@ -10,9 +10,6 @@ for z = 1, 48 do self.clouds[z]["sy"] = math.random( 20, math.min( 80, self.clou
 end
 
 function ENT.init( self )
-	self.linescale = 0.50
-	self.framescale = 0.25
-	self.resetclouds = ENT.resetclouds
 	self.clouds = {}
 
 for z = 1, 48 do self.clouds[z] = {["x"]=math.random( -( love.graphics.getWidth() /2 ), love.graphics.getWidth() *2 ),["y"]=math.random( -20, 400 ),["sx"]=math.random( 80, love.graphics.getWidth() /6 )} end
@@ -25,14 +22,14 @@ function ENT.think( self )
 if self.skyprinted == true then
 
 for z = 1, table.maxn( self.clouds ) do
-	self.clouds[z]["x"] = self.clouds[z]["x"] -1
-if self.clouds[z]["x"] <= -( love.graphics.getWidth() /2 ) then
+	self.clouds[z]["x"] = self.clouds[z]["x"] -1 --moves clouds
+if self.clouds[z]["x"] <= -( love.graphics.getWidth() /2 ) then --loops sky
 	self.clouds[z]["x"] = love.graphics.getWidth() *2
       end
    end
 end
 
-if self.cloudsuncliped ~= true then
+if self.cloudsuncliped ~= true then --makes the clouds evenly spreed
 if self.cloudsort == nil then self.cloudsort = 0 end
 	self.cloudsort = self.cloudsort +1
 
@@ -78,7 +75,7 @@ end
 return -7
 end
 
-emitentitytype( "env_sky", {["loadresources"]=ENT.loadresources,["init"]=ENT.init,["onremove"]=ENT.onremove,["think"]=ENT.think,["draw"]=ENT.draw,["mousepress"]=ENT.mousepress,["keypress"]=ENT.keypress,} )
+emitentitytype( "env_sky", {ENT} )
 
 	local ent = spawnentity( "env_sky", "sky" )
 	

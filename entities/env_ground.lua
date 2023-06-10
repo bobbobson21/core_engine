@@ -1,7 +1,7 @@
 
-	local ENT = {}
+	local ENT = {} --allows you to create a sort of ground for the player
 
-function ENT.setposandsize( self, xa, ya, sxa, sya )
+function ENT.setposandsize( self, xa, ya, sxa, sya ) --set pos and then size in pixles
 	self.x, self.y, self.sizex, self.sizey = xa, ya, sxa, sya
 	self.hboxsx, self.hboxsy = sxa, sya
 if self.loperforgtex ~= nil then self.loperforgtex = love.graphics.newQuad( 0, 0, self.sizex, self.sizey, self.groundtexture:getWidth(), self.groundtexture:getHeight() ) end
@@ -9,7 +9,7 @@ if self.loperforstex ~= nil then self.loperforstex = love.graphics.newQuad( 0, 0
 if self.loperfordtex ~= nil then self.loperfordtex = love.graphics.newQuad( 0, 0, self.sizex -1, self.surfacetexture:getHeight(), self.surfacetexture:getWidth(), self.surfacetexture:getHeight() ) end
 end
 
-function ENT.loadresources()
+function ENT.loadresources() 
 emitresources( "XimagesaddloopX", "add", {emitresources( "XimageX", "groundstone_texture", "textures/ground/ground_stone.png" ),} )
 emitresources( "XimagesaddloopX", "add", {emitresources( "XimageX", "groundover_texture", "textures/ground/ground_over.png" ),} )
 end
@@ -17,7 +17,6 @@ end
 function ENT.init( self )
 	self.x, self.y = 0, 0
 	self.sizex, self.sizey = 0, 0
-	self.setposandsize = ENT.setposandsize
 	self.collideable = true
 end
 
@@ -57,4 +56,4 @@ return -4
 end
 
 
-emitentitytype( "env_ground", {["loadresourcetypes"]=ENT.loadresourcetypes,["loadresources"]=ENT.loadresources,["init"]=ENT.init,["onremove"]=ENT.onremove,["think"]=ENT.think,["draw"]=ENT.draw,["mousepress"]=ENT.mousepress,["keypress"]=ENT.keypress,} )
+emitentitytype( "env_ground", ENT )

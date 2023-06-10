@@ -1,22 +1,22 @@
 
 	local ENT = {}
 
-function playerloaded() return false end
-function playergetrespawnpoint() return 0, 0 end
-function playergetcontroles() return {["left"]="left",["right"]="right",["jump"]="space",["attack"]=1,["use"]="e"} end
-function playersetcontroles( val ) function playergetcontroles() return val end end
-function playersetrespawnpoint( x, y ) function playergetrespawnpoint() return x, y end end
+function playerloaded() return false end --has the player been spawned
+function playergetrespawnpoint() return 0, 0 end --re spawn point 
+function playergetcontroles() return {["left"]="left",["right"]="right",["jump"]="space",["attack"]=1,["use"]="e"} end --player controles
+function playersetcontroles( val ) function playergetcontroles() return val end end --sets the player controls
+function playersetrespawnpoint( x, y ) function playergetrespawnpoint() return x, y end end --sets a respawn point 
 
-PLAYER_COLLIDEGROUP_UPHEAVY = function( self, ent, side )
+PLAYER_COLLIDEGROUP_UPHEAVY = function( self, ent, side ) --makes the game more likely to react to a collision with an up motion which is good for parkore
 if self.y +( self.hboxsy /2 ) > ent.y and side == "up" then return false end
 if self.y +( self.hboxsy /2 ) <= ent.y and side ~= "up" then return false end
 end
 
-PLAYER_COLLIDEGROUP_UPONLY = function( self, ent, side )
+PLAYER_COLLIDEGROUP_UPONLY = function( self, ent, side ) --makes the player only collide with the top of a serface
 if side ~= "up" then return false end
 end
 
-function playerdespawn()
+function playerdespawn() --despawns player
 if playerloaded() == true then
 getentity( "obj_player", "player" ).active = 0
 removeentity( "obj_player", "player" )
@@ -25,12 +25,12 @@ function playerloaded() return false end
    end
 end
 
-function playerspawn( x, y, dontdoextra )
+function playerspawn( x, y, dontdoextra ) --respawns them 
 if playerloaded() == false then
 	local ent = spawnentity( "obj_player", "player" )
 	ent.x = x
 	ent.y = y
-	ent.notreportal = dontdoextra
+	ent.notreportal = dontdoextra --desides if spawn effect should be done
 ENT.dospawnstuff( ent, x, y )
 return ent
 end
@@ -51,15 +51,15 @@ return getentity( "obj_player", "player" )
 end
 
 function ENT.dospawnstuff( self, x, y )
-	self.jumplastfor = 0
+	self.jumplastfor = 0 --player can't mid air jump
 	self.jumpdir = 0
 	self.injump = false
 	self.jumpland = nil
 	self.jumplandpullforce = nil
-	getentity( "point_mainmenu", "mainmenu" ).darkness = 255
+	getentity( "point_mainmenu", "mainmenu" ).darkness = 255 --we use main menu dake fade to make it seem more like a natural transition
 end
 
-function ENT.buttonpress( self, presstype, button )
+function ENT.buttonpress( self, presstype, button ) --detect player trying to use entity use
 if levels.getfreeze() ~= true then
 if button == playergetcontroles()["use"] and self.blockinput ~= true then
 	local allowuse = runhook( "player.allowuse", {self} )
@@ -70,18 +70,17 @@ if masteruse ~= false then
 	local doneuse = false
 for k,v in pairs( getentity( nil, nil ) ) do
 if doneuse ~= true then
-if v.useable == true then
+if v.useable == true then --useable entities also must have self.useable = true in init function
 if mua.distance( self.x +( self.sizex /2 ), self.y +( self.sizey /2 ), v.x +v.usepointoffsetx, v.y +v.usepointoffsety ) <= 60 then
 runhook( "player.use", {v, self} )
-v.use( v, self )
+runentityfunction( v, "use", true, {self} ) --use is a function you can put in any entity if if it has it, it will be used
 	doneuse = true
+                     end
+                  end
                end
             end
          end
       end
-   end
-end
-
    end
 end
 
@@ -99,8 +98,6 @@ emitresources( "XnewsoundX", "playerjump_sound2", {[1]="sounds/player/player_jum
 end
 
 function ENT.init( self )
-	self.dospawnstuff = ENT.dospawnstuff
-	self.buttonpress = ENT.buttonpress
 	self.gravityfloor = 0
 	self.x, self.y = 0, 0
 	self.sizex, self.sizey = 40, 40
@@ -117,11 +114,11 @@ if self.active ~= 0 then
 	local controles = playergetcontroles()
 	
 if emitcam ~= nil and self.attachedcam ~= true then	
-emitcam().setcammotion( emitcam(), getentity( self ), "x", "y", 20, -100 )
+runentityfunction( emitcam(), "setcammotion", true, {getentity( self ), "x", "y", 20, -100} ) --attches a camera to the player as soon as a camera is loaded
 	self.attachedcam = true
 end
 
-if mua.controlemaster( controles["attack"] ) == true then
+if mua.controlemaster( controles["attack"] ) == true then --can the player attcak
 for k,v in pairs( getentity( nil, nil ) ) do
 if v.health ~= nil and v.health >= 0 and v ~= self then
 if mua.distance( self.x +( self.sizex /2 ), self.y +( self.sizey /2 ), v.x +( v.sizex /2 ), v.y +( v.sizey /2 ) ) <= 400 then
@@ -131,7 +128,7 @@ if mua.distance( self.x +( self.sizex /2 ), self.y +( self.sizey /2 ), v.x +( v.
    end
 end
 
-if ( self.blockinput ~= true ) and ( mua.controlemaster( controles["left"] ) == true or mua.controlemaster( controles["right"] ) == true ) then
+if ( self.blockinput ~= true ) and ( mua.controlemaster( controles["left"] ) == true or mua.controlemaster( controles["right"] ) == true ) then --dose sound for walking
 if self.domovesoundin == nil then self.domovesoundin = emittimeadd( 8 ) end
 if self.lastgravity ~= true and self.injump ~= true and self.jumpland ~= true then
 if emittime() >= self.domovesoundin then
@@ -142,7 +139,7 @@ if self.dotimerecoarding == true then self.recmovesound = true end
    end
 end
 
-if mua.controlemaster( controles["right"] ) == true and self.blockinput ~= true then
+if mua.controlemaster( controles["right"] ) == true and self.blockinput ~= true then --walk right
 if self.injump ~= true and self.jumpland ~= true then
 if self.holdingcube ~= nil then self.holdingcubeoffsetx = self.sizex end
 if self.dotimerecoarding == true then self.recactcube = "+" end
@@ -150,7 +147,7 @@ if self.dotimerecoarding == true then self.recactcube = "+" end
    end
 end
 
-if mua.controlemaster( controles["left"] ) == true and self.blockinput ~= true then
+if mua.controlemaster( controles["left"] ) == true and self.blockinput ~= true then --walk left
 if self.injump ~= true and self.jumpland ~= true then
 if self.holdingcube ~= nil then self.holdingcubeoffsetx = -( self.holdingcube["sx"] ) end
 if self.dotimerecoarding == true then self.recactcube = "-" end
@@ -160,7 +157,7 @@ end
 
 	local gravity = true
 	self.hboxx, self.hboxy = self.x, self.y
-for k,v in pairs( getentity( nil, nil ) ) do
+for k,v in pairs( getentity( nil, nil ) ) do --all collision nonsence and no I wont go thougth it trust me you want to know how it works
 if v.collideable == true and v.active ~= 0 then
 if mua.isboxinbox( self.hboxx, self.hboxy, self.hboxsx, self.hboxsy, v.x, v.y -1, v.hboxsx, 3 ) == true then
 if ( v.collideablegroup == nil and self.y +( self.hboxsy /2 ) <= v.y ) or ( v.collideablegroup ~= nil and v.collideablegroup( self, v, "up" ) ~= false ) then
@@ -207,9 +204,9 @@ else
    end
 end
 
-if gravity == true then self.y = self.y +6 end
+if gravity == true then self.y = self.y +6 end --gravity also not gravity can sometimes be turnded off temporaliy
 
-if self.injump ~= true and gravity ~= true then
+if self.injump ~= true and gravity ~= true then --jumping physics
 if mua.controlemaster( controles["jump"] ) == true and self.blockinput ~= true then
 if self.jumpmoveractive == true then self.jumpmoveractive = false end
 	self.jumpdir = 0
@@ -222,7 +219,7 @@ if self.dotimerecoarding == true then self.recjumpsound = true end
    end
 end
 
-if self.injump == true then
+if self.injump == true then --jumping physics
 if mua.controlemaster( controles["left"] ) == true and self.blockinput ~= true and self.jumpdir >= -4.20 then self.jumpdir = self.jumpdir -0.40 end
 if mua.controlemaster( controles["right"] ) == true and self.blockinput ~= true and self.jumpdir <= 4.20 then self.jumpdir = self.jumpdir +0.40 end
 	
@@ -233,7 +230,7 @@ end
 if emittime() >= self.jumplastfor then self.injump, self.jumpland = nil, true end
 end
 
-if self.jumpland == true then
+if self.jumpland == true then --jumping physics
 if self.jumplandpullforce == nil then self.jumplandpullforce = 4 end
 if gravity == true and self.jumplandpullforce >= 0 then
 	self.y = self.y -math.floor( self.jumplandpullforce +0.5 )
@@ -271,5 +268,5 @@ end
 function ENT.mousepress( self, x, y, side, touching ) self.buttonpress( self, "mouse", side ) end
 function ENT.keypress( self, key, scancode, isrepet ) self.buttonpress( self, "key", key ) end
 
-emitentitytype( "obj_player", {["loadresources"]=ENT.loadresources,["init"]=ENT.init,["onremove"]=ENT.onremove,["think"]=ENT.think,["draw"]=ENT.draw,["mousepress"]=ENT.mousepress,["keypress"]=ENT.keypress,} )
+emitentitytype( "obj_player", ENT )
 	

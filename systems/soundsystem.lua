@@ -3,7 +3,7 @@
 
 	_G_soundsystem_dooutputcheck = true
 
-function soundsystem.overallvolume( num, maxover )
+function soundsystem.overallvolume( num, maxover ) --total volume
 if soundsystem["toplay"] == nil then soundsystem["toplay"] = {} end
 if soundsystem["soundtime"] == nil then soundsystem["soundtime"] = {} end
 if maxover == true then
@@ -24,7 +24,7 @@ if soundsystem["soundtime"][z][1] ~= nil then
    end
 end
 
-function soundsystem.masterstop( maxstop )
+function soundsystem.masterstop( maxstop ) --stops all the audio currently playing but if maxstop == true all audio schedualed to play will be gone as well
 if soundsystem["toplay"] == nil then soundsystem["toplay"] = {} end
 if soundsystem["soundtime"] == nil then soundsystem["soundtime"] = {} end
 if maxstop == true then
@@ -46,12 +46,12 @@ if soundsystem["soundtime"][z][1] ~= nil and soundsystem["soundtime"][z][1].auto
    end
 end
 
-function soundsystem.getgroup( name )
+function soundsystem.getgroup( name ) --gets a sound data group
 if soundsystem["groups"] == nil then soundsystem["groups"] = {} end
 return soundsystem["groups"][name]
 end
 
-function soundsystem.emitgroup( name, tbl )
+function soundsystem.emitgroup( name, tbl ) --makes a sound data group
 if soundsystem["groups"] == nil then soundsystem["groups"] = {} end
 if soundsystem["formatgroups"] == nil then soundsystem["formatgroups"] = {} end
 	local tblb = {}
@@ -63,7 +63,7 @@ end
 	soundsystem["groups"][name]=tblb
 end
 
-function soundsystem.volumemusic( vol )
+function soundsystem.volumemusic( vol ) --music volume
 if _G_soundsystem_dooutputcheck ~= true or soundsystem["soundfullloaded"] == true then
 soundsystem["soundtrack"]:setVolume( vol /100 )
 else
@@ -79,7 +79,7 @@ function soundsystem.replaymusic()
 if soundsystem["soundtrack"] ~= nil then soundsystem["soundtrack"]:play() end
 end
 
-function soundsystem.playasmusic( sound )
+function soundsystem.playasmusic( sound ) --playes a sound as music and it will loop forever
 if _G_soundsystem_dooutputcheck ~= true or soundsystem["soundfullloaded"] == true then
 sound:setLooping( true )
 sound:play()
@@ -90,7 +90,7 @@ else
    end
 end
 
-function soundsystem.playsound( sound, delay )
+function soundsystem.playsound( sound, delay ) --plays a sound
 	local thesound = sound
 if soundsystem["soundfullloaded"] == false then return soundsystem["fakesndtbl"] end
 if soundsystem["toplay"] == nil then soundsystem["toplay"] = {} end
@@ -124,7 +124,7 @@ function soundsystem.init( self )
 	soundsystem["soundfullloaded"] = false
 if _G_soundsystem_dooutputcheck ~= true then soundsystem["soundfullloaded"] = true end
 if _G_soundsystem_dooutputcheck == true then
-love.filesystem.write( "sndoutput.vbs", tostring( 'Dim snd, dat, file: Set snd =CreateObject("SAPI.spvoice"): Set dat =CreateObject("Scripting.FileSystemObject"): ' )..tostring( 'Set file =dat.OpenTextFile( "' )..tostring( love.filesystem.getSaveDirectory() )..tostring( '/soundon.dat",2,true ): If snd.GetAudioOutputs.Count <= 0 Then file.Write "false" Else file.Write "true" End If' ) )
+love.filesystem.write( "sndoutput.vbs", tostring( 'Dim snd, dat, file: Set snd =CreateObject("SAPI.spvoice"): Set dat =CreateObject("Scripting.FileSystemObject"): ' )..tostring( 'Set file =dat.OpenTextFile( "' )..tostring( love.filesystem.getSaveDirectory() )..tostring( '/soundon.dat",2,true ): If snd.GetAudioOutputs.Count <= 0 Then file.Write "false" Else file.Write "true" End If' ) ) --this allows us to know if the computer can actually play sound
 	local contents, size = love.filesystem.read( "sndoutput.vbs" )
 if contents ~= nil and contents ~= "" and contents ~= "nil" then
 os.execute( "if exist "..love.filesystem.getSaveDirectory().."/sndoutput.vbs start "..love.filesystem.getSaveDirectory().."/sndoutput.vbs" )
@@ -139,7 +139,7 @@ if emittime() >= self.actonsndoutputin then
 	self.actonsndoutputin = nil
 	local contents, size = love.filesystem.read( "soundon.dat" )
 if contents ~= nil and contents ~= "" and contents ~= "nil" then
-if contents ~= "true" then
+if contents ~= "true" then --if computer cant play sounds destroy all soundsystem content to pervent crashes 
 function soundsystem.playsound( sound, delay ) return soundsystem["fakesndtbl"] end
 function soundsystem.emitgroup( name, tbl ) end
 function soundsystem.getgroup( name ) end
@@ -152,7 +152,7 @@ else
 	soundsystem["soundfullloaded"] = true
 end	
 
-if soundsystem["soundfullloaded"] == true and soundsystem["soundtrack"] ~= nil then
+if soundsystem["soundfullloaded"] == true and soundsystem["soundtrack"] ~= nil then --plays music once we know the computer can do it
 if soundsystem["soundtrackvol"] ~= nil then soundsystem["soundtrack"]:setVolume( soundsystem["soundtrackvol"] ) end
 soundsystem["soundtrack"]:setLooping( true )
 soundsystem["soundtrack"]:play()
@@ -165,7 +165,7 @@ love.filesystem.remove( "soundon.dat" )
    end
 end
 
-if soundsystem["soundtime"] ~= nil then
+if soundsystem["soundtime"] ~= nil then --handles what happenes to sounds if games lag
 for z = 1, table.maxn( soundsystem["soundtime"] ) do
 if soundsystem["soundtime"][z] ~= nil then
 if soundsystem["soundtime"][z][1] ~= nil and soundsystem["soundtime"][z][2] ~= nil then
@@ -184,7 +184,7 @@ if emittime() >= soundsystem["soundtime"][z][2] then soundsystem["soundtime"][z]
    end
 end
 
-if soundsystem["toplay"] ~= nil then
+if soundsystem["toplay"] ~= nil then --handles delayed sounds
 for k,v in pairs( soundsystem["toplay"] ) do
 if emittime() >= v[2] then
 v[1]:play()

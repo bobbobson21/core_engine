@@ -8,7 +8,6 @@ end
 function ENT.init( self )
 	self.x, self.y = 0, 0
 	self.sizex, self.sizey = 0, 0
-	self.setposandsize = ENT.setposandsize
 end
 
 function ENT.think( self )
@@ -16,9 +15,9 @@ if self.active ~= 0 then
 if playerget() ~= nil then
 	local ply = playerget()
 if mua.isboxinbox( self.x, self.y, self.sizex, self.sizey, ply.x, ply.y, ply.hboxsx, ply.hboxsy ) == true then
-if self.triggeractive ~= true then
+if self.triggeractive ~= true then --is trigger on also note active genrally means dose it exsist in rendering and physicality
 	self.triggeractive = true
-if self.triggeroutput ~= nil and self.firstentered ~= true then self.triggeroutput( self, ply, "firstentered" ) end
+if self.triggeroutput ~= nil and self.firstentered ~= true then self.triggeroutput( self, ply, "firstentered" ) end --self.triggeroutput exsists it runs that
 if self.triggeroutput ~= nil then self.triggeroutput( self, ply, "entered" ) end
 	self.firstentered = true
 end
@@ -41,4 +40,4 @@ if self.active ~= 0 then mua.drawdevbox( self.x, self.y, self.sizex, self.sizey,
 return 1
 end
 
-emitentitytype( "obj_trigger", {["loadresourcetypes"]=ENT.loadresourcetypes,["loadresources"]=ENT.loadresources,["init"]=ENT.init,["onremove"]=ENT.onremove,["think"]=ENT.think,["draw"]=ENT.draw,["mousepress"]=ENT.mousepress,["keypress"]=ENT.keypress,} )
+emitentitytype( "obj_trigger", ENT )

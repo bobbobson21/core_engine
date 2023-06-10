@@ -45,7 +45,7 @@ for k,v in pairs( getentity( nil, nil ) ) do
 if v.KEEP_AFTER_LEVEL_UNLOAD ~= true then removeentity( v ) end
 end
 particlesystem.removeparticle( nil, true )
-getentity( "env_sky", "sky" ).resetsky( getentity( "env_sky", "sky" ) )
+runentityfunction( getentity( "env_sky", "sky" ), "resetclouds", true, {} )
 
 	local menu = getentity( "point_mainmenu", "mainmenu" )
 
@@ -79,7 +79,7 @@ end
 soundsystem.replaymusic()
 love.mouse.setVisible( true )
 particlesystem.removeparticle( nil, true )
-getentity( "env_sky", "sky" ).resetsky( getentity( "env_sky", "sky" ) )
+runentityfunction( getentity( "env_sky", "sky" ), "resetclouds", true, {} )
 
 	local menu = getentity( "point_mainmenu", "mainmenu" )
 
@@ -98,7 +98,7 @@ getentity( "env_sky", "sky" ).resetsky( getentity( "env_sky", "sky" ) )
 	levels.activelevel = nil
 end
 
-emitentitytype( "point_levels", {["loadresources"]=levels.loadresources,["init"]=levels.init,["onremove"]=levels.onremove,["think"]=levels.think,["draw"]=levels.draw,["mousepress"]=levels.mousepress,["keypress"]=levels.keypress,} )
+emitentitytype( "point_levels", levels )
 
 	local ent = spawnentity( "point_levels", "levelmanager" )
 	

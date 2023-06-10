@@ -1,5 +1,5 @@
 
-	local ENT = {}
+	local ENT = {} --creates invisable barriers which can be seen in dev mode
 
 function ENT.setposandsize( self, xa, ya, sxa, sya )
 	self.x, self.y, self.sizex, self.sizey = xa, ya, sxa, sya
@@ -9,7 +9,6 @@ end
 function ENT.init( self )
 	self.x, self.y = 0, 0
 	self.sizex, self.sizey = 0, 0
-	self.setposandsize = ENT.setposandsize
 	self.collideable = true
 end
 
@@ -18,4 +17,4 @@ mua.drawdevbox( self.x, self.y, self.sizex, self.sizey, {["r"]=180,["g"]=0,["b"]
 return -1
 end
 
-emitentitytype( "env_invisbarrier", {["loadresourcetypes"]=ENT.loadresourcetypes,["loadresources"]=ENT.loadresources,["init"]=ENT.init,["onremove"]=ENT.onremove,["think"]=ENT.think,["draw"]=ENT.draw,["mousepress"]=ENT.mousepress,["keypress"]=ENT.keypress,} )
+emitentitytype( "env_invisbarrier", ENT )
