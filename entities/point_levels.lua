@@ -1,7 +1,7 @@
 
 	levels = {}
 
-function levels.freezelevel( freeze )
+function levels.freezelevel( freeze ) --pauses the game
 if freeze == true then
 	levels.isfrozen = true
 emithook( "think.end", "levelsystempause", function() return true end)
