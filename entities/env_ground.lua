@@ -21,10 +21,10 @@ function ENT.init( self )
 end
 
 function ENT.draw( self )
-if self.resources == nil and mua.tableisempty( getresourcesminp() ) == false then self.resources = getresourcesminp() end
-if self.resources ~= nil and self.active ~= 0 then
-if self.groundtexture == nil then self.groundtexture = self.resources["XimageAloopX"]["groundstone_texture"] end
-if self.surfacetexture == nil then self.surfacetexture = self.resources["XimageAloopX"]["groundover_texture"] end
+
+if getresourcesloaded() == true and self.active ~= 0 then
+if self.groundtexture == nil then self.groundtexture = getresources( "XimageAloopX", "groundstone_texture" ) end
+if self.surfacetexture == nil then self.surfacetexture = getresources( "XimageAloopX", "groundover_texture") end
 if self.loperforgtex == nil then self.loperforgtex = love.graphics.newQuad( 0, 0, self.sizex, self.sizey, self.groundtexture:getWidth(), self.groundtexture:getHeight() ) end
 if self.loperforstex == nil then self.loperforstex = love.graphics.newQuad( 0, 0, self.sizex, self.surfacetexture:getWidth(), self.surfacetexture:getWidth(), self.surfacetexture:getHeight() ) end
 if emitcam() ~= nil then

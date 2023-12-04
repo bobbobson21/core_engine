@@ -390,6 +390,11 @@ if resources == nil then resources = {} end
 return _G["resources"]
 end
 
+function getresourcesloaded() --loaded
+if resources == nil then resources = {} end
+return ( next( resources ) ~= nil)
+end
+
 function tostrevent( str ) --puts X's at the ends of things for thoese who are lazy
 return "X"..str.."X"
 end

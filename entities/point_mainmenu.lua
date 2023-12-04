@@ -18,6 +18,7 @@ function ENT.init( self )
 
 	self.pgtext = "play game"
 	self.qgtext = "quit game"
+	self.startlevel = "lv1"
 	
 	self.menu = 1
 	self.darkness = 0
@@ -28,7 +29,7 @@ function ENT.init( self )
 soundsystem.volumemusic( self.settings[7] )
 	
 	local contents, size = love.filesystem.read( "save.dat" )
-if contents ~= nil and contents ~= "" and contents ~= "nil" then if contents == "LV8" then self.pgtext = "play again" else self.pgtext = "continue" end end
+if contents ~= nil and contents ~= "" and contents ~= "nil" then self.pgtext = "continue" end
 emithook( "think.bypass", "point_mainmenu-"..tostring( emitentitytypeinfo( self )["identifyer"] ), function() ENT.think( self ) end)
 
 	local contentsb, sizeb = love.filesystem.read( "settings.dat" )
@@ -72,10 +73,7 @@ if emittime() >= self.menuloadicontime then self.menuloadicontime, self.rotloadi
 end
 
 function ENT.draw( self )
-
-
-if self.resources == nil and mua.tableisempty( getresourcesminp() ) == false then self.resources = getresourcesminp() end
-if self.resources ~= nil then
+if getresourcesloaded() == true then
 
 love.graphics.setLineWidth( 4 )
 
@@ -102,10 +100,10 @@ if self.active ~= 0 then
 if self.menu == 1 then
 
 love.graphics.setColor( 0, 0, 0, 1 )
-love.graphics.setFont( self.resources["XfontX"]["menutitle_font"] )
-love.graphics.print( gamewindowtitle(), ( love.graphics.getWidth() /2 ) -( self.resources["XfontX"]["menutitle_font"]:getWidth( gamewindowtitle() ) /2 ) +6, ( love.graphics.getHeight() /1.40 ) -348 +6 )
+love.graphics.setFont( getresources("XfontX", "menutitle_font") )
+love.graphics.print( gamewindowtitle(), ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menutitle_font"):getWidth( gamewindowtitle() ) /2 ) +6, ( love.graphics.getHeight() /1.40 ) -348 +6 )
 love.graphics.setColor( 1, 1, 1, 1 )
-love.graphics.print( gamewindowtitle(), ( love.graphics.getWidth() /2 ) -( self.resources["XfontX"]["menutitle_font"]:getWidth( gamewindowtitle() ) /2 ), ( love.graphics.getHeight() /1.40 ) -348 )
+love.graphics.print( gamewindowtitle(), ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menutitle_font"):getWidth( gamewindowtitle() ) /2 ), ( love.graphics.getHeight() /1.40 ) -348 )
 
 love.graphics.setColor( 0, 0, 0, 0.60 )
 if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -240, love.graphics.getWidth() /2, 80, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true then love.graphics.setColor( 0, 0, 0, 0.80 ) end
@@ -124,19 +122,19 @@ love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -140, love.graphics.getWidth() /2, 80 )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -40, love.graphics.getWidth() /2, 80 )
 
-love.graphics.setFont( self.resources["XfontX"]["menubutton_font"] )
-love.graphics.print( self.pgtext, ( love.graphics.getWidth() /2 ) -( self.resources["XfontX"]["menubutton_font"]:getWidth( self.pgtext ) /2 ), ( love.graphics.getHeight() /1.40 ) -220 )
-love.graphics.print( "settings", ( love.graphics.getWidth() /2 ) -( self.resources["XfontX"]["menubutton_font"]:getWidth( "settings" ) /2 ), ( love.graphics.getHeight() /1.40 ) -120 )
-love.graphics.print( self.qgtext, ( love.graphics.getWidth() /2 ) -( self.resources["XfontX"]["menubutton_font"]:getWidth( self.qgtext ) /2 ), ( love.graphics.getHeight() /1.40 ) -20 )
+love.graphics.setFont( getresources("XfontX", "menubutton_font") )
+love.graphics.print( self.pgtext, ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menubutton_font"):getWidth( self.pgtext ) /2 ), ( love.graphics.getHeight() /1.40 ) -220 )
+love.graphics.print( "settings", ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menubutton_font"):getWidth( "settings" ) /2 ), ( love.graphics.getHeight() /1.40 ) -120 )
+love.graphics.print( self.qgtext, ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menubutton_font"):getWidth( self.qgtext ) /2 ), ( love.graphics.getHeight() /1.40 ) -20 )
 end
 
 if self.menu == -1 then
 
 love.graphics.setColor( 0, 0, 0, 1 )
-love.graphics.setFont( self.resources["XfontX"]["menutitle_font"] )
-love.graphics.print( "settings", ( love.graphics.getWidth() /2 ) -( self.resources["XfontX"]["menutitle_font"]:getWidth( "settings" ) /2 ) +6, ( love.graphics.getHeight() /1.40 ) -448 +6 )
+love.graphics.setFont( getresources("XfontX", "menutitle_font") )
+love.graphics.print( "settings", ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menutitle_font"):getWidth( "settings" ) /2 ) +6, ( love.graphics.getHeight() /1.40 ) -448 +6 )
 love.graphics.setColor( 1, 1, 1, 1 )
-love.graphics.print( "settings", ( love.graphics.getWidth() /2 ) -( self.resources["XfontX"]["menutitle_font"]:getWidth( "settings" ) /2 ), ( love.graphics.getHeight() /1.40 ) -448 )
+love.graphics.print( "settings", ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menutitle_font"):getWidth( "settings" ) /2 ), ( love.graphics.getHeight() /1.40 ) -448 )
 
 love.graphics.setColor( 0, 0, 0, 0.60 )
 if mua.isboxinbox( ( ( love.graphics.getWidth() /2 ) +love.graphics.getWidth() /4 ) +19, ( love.graphics.getHeight() /1.40 ) -340, 60, 372, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true then love.graphics.setColor( 0, 0, 0, 0.80 ) end
@@ -171,15 +169,15 @@ love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -340, love.graphics.getWidth() /2, 372 )
 love.graphics.rectangle( "line", ( ( love.graphics.getWidth() /2 ) +love.graphics.getWidth() /4 ) +19, ( love.graphics.getHeight() /1.40 ) -340, 61, 372 )
 
-love.graphics.rectangle( "fill", math.floor( ( ( ( love.graphics.getWidth() /2 ) +love.graphics.getWidth() /4 ) +50.50 ) -( self.resources["XfontX"]["menubutton_font"]:getWidth( "M" ) /2 ) ), ( love.graphics.getHeight() /1.40 ) -290, 32, ( self.musicvolume /100 ) *309 )
+love.graphics.rectangle( "fill", math.floor( ( ( ( love.graphics.getWidth() /2 ) +love.graphics.getWidth() /4 ) +50.50 ) -( getresources("XfontX", "menubutton_font"):getWidth( "M" ) /2 ) ), ( love.graphics.getHeight() /1.40 ) -290, 32, ( self.musicvolume /100 ) *309 )
 
-love.graphics.setFont( self.resources["XfontX"]["menubutton_font"] )
-love.graphics.print( "M", math.floor( ( ( ( love.graphics.getWidth() /2 ) +love.graphics.getWidth() /4 ) +50.50 ) -( self.resources["XfontX"]["menubutton_font"]:getWidth( "M" ) /2 ) ), math.floor( ( love.graphics.getHeight() /1.40 ) -330 ) )
-love.graphics.print( "back to menu and apply", math.floor( ( love.graphics.getWidth() /2 ) -( self.resources["XfontX"]["menubutton_font"]:getWidth( "back to menu and apply" ) /2 ) ), math.floor( ( love.graphics.getHeight() /1.40 ) +72 ) )
+love.graphics.setFont( getresources("XfontX", "menubutton_font") )
+love.graphics.print( "M", math.floor( ( ( ( love.graphics.getWidth() /2 ) +love.graphics.getWidth() /4 ) +50.50 ) -( getresources("XfontX", "menubutton_font"):getWidth( "M" ) /2 ) ), math.floor( ( love.graphics.getHeight() /1.40 ) -330 ) )
+love.graphics.print( "back to menu and apply", math.floor( ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menubutton_font"):getWidth( "back to menu and apply" ) /2 ) ), math.floor( ( love.graphics.getHeight() /1.40 ) +72 ) )
 love.graphics.print( "action", math.floor( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +31 ), math.floor( ( love.graphics.getHeight() /1.40 ) -330 ) )
 love.graphics.print( "key", math.floor( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +270 ), math.floor( ( love.graphics.getHeight() /1.40 ) -330 ) )
 
-love.graphics.setFont( self.resources["XfontX"]["menuaction_font"] )
+love.graphics.setFont( getresources("XfontX", "menuaction_font") )
 love.graphics.print( "use object", math.floor( ( love.graphics.getWidth() /2 ) -( love.graphics.getWidth() /4 ) +40.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -280 ) +0.50 ) )
 love.graphics.print( "attack", math.floor( ( love.graphics.getWidth() /2 ) -( love.graphics.getWidth() /4 ) +40.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -230 ) +0.50 ) )
 love.graphics.print( "Right", math.floor( ( love.graphics.getWidth() /2 ) -( love.graphics.getWidth() /4 ) +40.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -180 ) +0.50 ) )
@@ -203,12 +201,12 @@ if ds[z] == "escape" then ds[z] = "ESCAPE" end
 if string.len( tostring( ds[z] ) ) == 1 then ds[z] = string.upper( ds[z] ) end
 end
 
-love.graphics.print( ds[1], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( self.resources["XfontX"]["menuaction_font"]:getWidth( ds[1] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -280 ) +0.50 ) )
-love.graphics.print( ds[2], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( self.resources["XfontX"]["menuaction_font"]:getWidth( ds[2] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -230 ) +0.50 ) )
-love.graphics.print( ds[3], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( self.resources["XfontX"]["menuaction_font"]:getWidth( ds[3] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -180 ) +0.50 ) )
-love.graphics.print( ds[4], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( self.resources["XfontX"]["menuaction_font"]:getWidth( ds[4] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -130 ) +0.50 ) )
-love.graphics.print( ds[5], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( self.resources["XfontX"]["menuaction_font"]:getWidth( ds[5] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -80 ) +0.50 ) )
-love.graphics.print( ds[6], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( self.resources["XfontX"]["menuaction_font"]:getWidth( ds[6] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -30 ) +0.50 ) )
+love.graphics.print( ds[1], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( getresources("XfontX", "menuaction_font"):getWidth( ds[1] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -280 ) +0.50 ) )
+love.graphics.print( ds[2], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( getresources("XfontX", "menuaction_font"):getWidth( ds[2] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -230 ) +0.50 ) )
+love.graphics.print( ds[3], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( getresources("XfontX", "menuaction_font"):getWidth( ds[3] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -180 ) +0.50 ) )
+love.graphics.print( ds[4], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( getresources("XfontX", "menuaction_font"):getWidth( ds[4] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -130 ) +0.50 ) )
+love.graphics.print( ds[5], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( getresources("XfontX", "menuaction_font"):getWidth( ds[5] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -80 ) +0.50 ) )
+love.graphics.print( ds[6], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( getresources("XfontX", "menuaction_font"):getWidth( ds[6] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -30 ) +0.50 ) )
 
 love.graphics.setColor( 0.80, 0.80, 0.80, 1 )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +33, ( love.graphics.getHeight() /1.40 ) -284, 229, 40 )
@@ -285,7 +283,7 @@ levels.freezelevel( false )
 if gameindevmode() ~= true then love.mouse.setVisible( false ) end
 else
 	self.hold = true
-	self.savedata = "LV1"
+	self.savedata = self.startlevel
 	local contents, size = love.filesystem.read( "save.dat" )
 if contents ~= nil and contents ~= "" and contents ~= "nil" then self.savedata = contents end
 levels.loadlevel( self.savedata )
@@ -382,5 +380,3 @@ end
 emitentitytype( "point_mainmenu", ENT )
 
 	local ent = spawnentity( "point_mainmenu", "mainmenu" )
-
-	

@@ -21,7 +21,6 @@ if playerloaded() == true then
 getentity( "obj_player", "player" ).active = 0
 removeentity( "obj_player", "player" )
 playersetrespawnpoint( x, y )
-function playerloaded() return false end
    end
 end
 
@@ -64,18 +63,15 @@ if levels.getfreeze() ~= true then
 if button == playergetcontroles()["use"] and self.blockinput ~= true then
 	local allowuse = runhook( "player.allowuse", {self} )
 	local masteruse = true
-if self.dotimerecoarding == true then self.recuseaction = true end
 for z = 1, table.maxn( allowuse ) do if masteruse ~= false and allowuse[z] == false then masteruse = false end end
 if masteruse ~= false then
-	local doneuse = false
+	
 for k,v in pairs( getentity( nil, nil ) ) do
-if doneuse ~= true then
 if v.useable == true then --useable entities also must have self.useable = true in init function
 if mua.distance( self.x +( self.sizex /2 ), self.y +( self.sizey /2 ), v.x +v.usepointoffsetx, v.y +v.usepointoffsety ) <= 60 then
 runhook( "player.use", {v, self} )
 runentityfunction( v, "use", true, {self} ) --use is a function you can put in any entity if if it has it, it will be used
-	doneuse = true
-                     end
+
                   end
                end
             end
@@ -123,6 +119,7 @@ for k,v in pairs( getentity( nil, nil ) ) do
 if v.health ~= nil and v.health >= 0 and v ~= self then
 if mua.distance( self.x +( self.sizex /2 ), self.y +( self.sizey /2 ), v.x +( v.sizex /2 ), v.y +( v.sizey /2 ) ) <= 400 then
 	v.health = math.max( v.health -10, 0 )
+if v.damagereaction ~= nil then v.damagereaction( v, self ) end
          end
       end
    end
@@ -251,8 +248,7 @@ end
 end
 
 function ENT.draw( self )
-if self.resources == nil and mua.tableisempty( getresourcesminp() ) == false then self.resources = getresourcesminp() end
-if self.resources ~= nil and self.active ~= 0 then
+if getresourcesloaded() == true and self.active ~= 0 then
 
 love.graphics.setLineWidth( 2 )
 love.graphics.setColor( 0, 1, 1, 1 )

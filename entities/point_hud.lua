@@ -10,8 +10,7 @@ function ENT.think( self )
 end
 
 function ENT.draw( self )
-if self.resources == nil and mua.tableisempty( getresourcesminp() ) == false then self.resources = getresourcesminp() end
-if self.resources ~= nil and self.active ~= 0 then
+if getresourcesloaded() == true and self.active ~= 0 then
 
 love.graphics.setLineWidth( 2 )
 love.graphics.setColor( 0, 0, 0, 0.60 )

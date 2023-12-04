@@ -5,14 +5,14 @@ function ENT.resetclouds( self ) --chages the sky background
 	self.clouds = {}
 	self.cloudsort = 0
 	self.cloudsuncliped = false
-for z = 1, 48 do self.clouds[z] = {["x"]=math.random( -( love.graphics.getWidth() /2 ), love.graphics.getWidth() *2 ),["y"]=math.random( -20, 400 ),["sx"]=math.random( 20, love.graphics.getWidth() /8 )} end
+for z = 1, 48 do self.clouds[z] = {["x"]=math.random( -( love.graphics.getWidth() /2 ), love.graphics.getWidth() *1.5 ),["y"]=math.random( -20, 400 ),["sx"]=math.random( 20, love.graphics.getWidth() /8 )} end
 for z = 1, 48 do self.clouds[z]["sy"] = math.random( 20, math.min( 80, self.clouds[z]["sx"] ) ) end
 end
 
 function ENT.init( self )
 	self.clouds = {}
 
-for z = 1, 48 do self.clouds[z] = {["x"]=math.random( -( love.graphics.getWidth() /2 ), love.graphics.getWidth() *2 ),["y"]=math.random( -20, 400 ),["sx"]=math.random( 80, love.graphics.getWidth() /6 )} end
+for z = 1, 48 do self.clouds[z] = {["x"]=math.random( -( love.graphics.getWidth() /2 ), love.graphics.getWidth() *1.5 ),["y"]=math.random( -20, 400 ),["sx"]=math.random( 80, love.graphics.getWidth() /6 )} end
 for z = 1, 48 do self.clouds[z]["sy"] = math.random( 20, math.min( 80, self.clouds[z]["sx"] ) ) end
 
 	self.skyprinted = true
@@ -24,7 +24,7 @@ if self.skyprinted == true then
 for z = 1, table.maxn( self.clouds ) do
 	self.clouds[z]["x"] = self.clouds[z]["x"] -1 --moves clouds
 if self.clouds[z]["x"] <= -( love.graphics.getWidth() /2 ) then --loops sky
-	self.clouds[z]["x"] = love.graphics.getWidth() *2
+	self.clouds[z]["x"] = love.graphics.getWidth() *1.5
       end
    end
 end
@@ -39,7 +39,7 @@ for y = 1, table.maxn( self.clouds ) do
 if z ~= y then
 if mua.isboxinbox( self.clouds[z]["x"] -2, self.clouds[z]["y"] -2, self.clouds[z]["sx"] +4, self.clouds[z]["sy"] +4, self.clouds[y]["x"] -2, self.clouds[y]["y"] -2, self.clouds[y]["sx"] +4, self.clouds[y]["sy"] +4 ) == true then
 	
-	self.clouds[z] = {["x"]=math.random( -love.graphics.getWidth() /2, love.graphics.getWidth() *2 ),["y"]=math.random( -20, 400 ),["sx"]=math.random( 80, love.graphics.getWidth() /6 ),["sy"]=math.random( 20, math.min( 80, self.clouds[z]["sx"] ) )}
+	self.clouds[z] = {["x"]=math.random( -love.graphics.getWidth() /2, love.graphics.getWidth() *1.5 ),["y"]=math.random( -20, 400 ),["sx"]=math.random( 80, love.graphics.getWidth() /6 ),["sy"]=math.random( 20, math.min( 80, self.clouds[z]["sx"] ) )}
 	cloudszcliping = true
          
 		 end
@@ -47,13 +47,12 @@ if mua.isboxinbox( self.clouds[z]["x"] -2, self.clouds[z]["y"] -2, self.clouds[z
    end
 end
 
-if cloudszcliping ~= true then if self.cloudsort >= love.graphics.getWidth() *2.20 or self.cloudsort <= -( love.graphics.getWidth() *2.20 ) then self.cloudsuncliped = true end end
+if cloudszcliping ~= true then if self.cloudsort >= love.graphics.getWidth() *2.20 then self.cloudsuncliped = true end end
    end
 end
 
 function ENT.draw( self )
-if self.resources == nil and mua.tableisempty( getresources( "XimageAloopX" ) ) == false then self.resources = getresources( "XimageAloopX" ) end
-if self.resources ~= nil and self.active ~= 0 then
+if self.active ~= 0 then
 
 love.graphics.setLineWidth( 6 )
 love.graphics.setBackgroundColor( 0, 180 /255, 1, 1 )
