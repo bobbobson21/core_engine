@@ -360,13 +360,13 @@ if self.pauseon == true then
 if key == self.pausekey then
 if key ~= escapejam then
 	local done = false
-if self.active ~= 0 and done == false then
-	self.active, self.darknessdir, done = 0, 0, true
+if self.active ~= 0 then
+	self.active, self.darknessdir = 0, 0
 levels.freezelevel( false )
 if gameindevmode() ~= true then love.mouse.setVisible( false ) end
 end
-if self.active == 0 and done == false then
-	self.active, self.darknessdir, done = 1, 1, true
+if self.active == 0 then
+	self.active, self.darknessdir = 1, 1
 levels.freezelevel( true )
 if gameindevmode() ~= true then love.mouse.setVisible( true ) end
 end

@@ -71,6 +71,7 @@ if v.useable == true then --useable entities also must have self.useable = true 
 if mua.distance( self.x +( self.sizex /2 ), self.y +( self.sizey /2 ), v.x +v.usepointoffsetx, v.y +v.usepointoffsety ) <= 60 then
 runhook( "player.use", {v, self} )
 runentityfunction( v, "use", true, {self} ) --use is a function you can put in any entity if if it has it, it will be used
+break
 
                   end
                end
