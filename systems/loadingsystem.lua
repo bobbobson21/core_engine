@@ -75,18 +75,18 @@ if emittime() >= v[4] and v[6] ~= true and loadingsystem["lastloaded"] == v[5] -
 if string.find( k, "XresourcesX" ) ~= nil then --loades resouces
 runhook( "loadresourcetypes", {} )
 if entities ~= nil then
-for k,v in pairs( entities["mainfuncs"] ) do
-if entities["mainfuncs"][k] ~= nil and entities["mainfuncs"][k]["loadresourcetypes"] ~= nil then
-entities["mainfuncs"][k]["loadresourcetypes"]()
+for k,v in pairs( entities["classmain"] ) do
+if entities["classmain"][k] ~= nil and entities["classmain"][k]["loadresourcetypes"] ~= nil then
+entities["classmain"][k]["loadresourcetypes"]()
       end
    end
 end
    
 runhook( "loadresources", {} )
 if entities ~= nil then
-for k,v in pairs( entities["mainfuncs"] ) do
-if entities["mainfuncs"][k] ~= nil and entities["mainfuncs"][k]["loadresources"] ~= nil then
-entities["mainfuncs"][k]["loadresources"]()
+for k,v in pairs( entities["classmain"] ) do
+if entities["classmain"][k] ~= nil and entities["classmain"][k]["loadresources"] ~= nil then
+entities["classmain"][k]["loadresources"]()
                end
             end
          end

@@ -23,31 +23,31 @@ require( "requires" )
 
 runhook( "loadresourcetypes", {} ) --loades resource types for hooks. resource types allow you to create your own resources
 if entities ~= nil then
-for k,v in pairs( entities["mainfuncs"] ) do
-if entities["mainfuncs"][k] ~= nil and entities["mainfuncs"][k]["loadresourcetypes"] ~= nil then
-entities["mainfuncs"][k]["loadresourcetypes"]()  --loades resources types for entities
+for k,v in pairs( entities["classmain"] ) do
+if entities["classmain"][k] ~= nil and entities["classmain"][k]["loadresourcetypes"] ~= nil then
+entities["classmain"][k]["loadresourcetypes"]()  --loades resources types for entities
       end
    end
 end
    
 runhook( "loadresources", {} ) --loades resources for hooks
 if entities ~= nil then
-for k,v in pairs( entities["mainfuncs"] ) do
-if entities["mainfuncs"][k] ~= nil and entities["mainfuncs"][k]["loadresources"] ~= nil then
-entities["mainfuncs"][k]["loadresources"]()  --loades resources for hooks
+for k,v in pairs( entities["classmain"] ) do
+if entities["classmain"][k] ~= nil and entities["classmain"][k]["loadresources"] ~= nil then
+entities["classmain"][k]["loadresources"]()  --loades resources for hooks
          end
       end
    end
 end
 
 function emitentitytype( class, funcs ) --allows you create a new entity type. note have to access systems such as love.draw thougth the following set of functions: loadresourcetypes, loadresources, init, onremove, think, draw, mousepress, keypress. oh and you should put all the functions in a table under funcs
-if entities == nil then entities = {["mainfuncs"]={}} end
-	entities["mainfuncs"][class] = funcs --mainfuncs is like a sepical type of entity which stores the classes yo created and the funcs within them
+if entities == nil then entities = {["classmain"]={}} end
+	entities["classmain"][class] = funcs --classmain is like a sepical type of entity which stores the classes yo created and the funcs within them
 	entities[class] = {} --creates the class type and once this is done it can not be undone
 end
 
 function spawnentity( class, identifyer ) --spawns an entity of a certain class
-if entities == nil then entities = {["mainfuncs"]={}} end
+if entities == nil then entities = {["classmain"]={}} end
 if entities[class] ~= nil then
 
 	local id = {[1]=1,[2]=false}
@@ -67,14 +67,14 @@ end
 	entities[class][id[1]]["identifyer"] = id[1]
 
 runhook( "entity_oninit", _G["entities"][class][id[1]] ) --tells the game the entity was spawned  
-if entities["mainfuncs"][class]["init"] ~= nil then entities["mainfuncs"][class]["init"]( _G["entities"][class][id[1]] ) end --runs the inital entity code
+if entities["classmain"][class]["init"] ~= nil then entities["classmain"][class]["init"]( _G["entities"][class][id[1]] ) end --runs the inital entity code
 
 return _G["entities"][class][id[1]] --returns the enity so that valuse and stuff can be set on it and rendeing and think happens on the tick after actor creation so no issuse would come of this
    end
 end
 
 function getentity( entorclass, identifyer ) --gets an entity
-if entities == nil then entities = {["mainfuncs"]={}} end
+if entities == nil then entities = {["classmain"]={}} end
 if type( entorclass ) ~= "table" then
 if entorclass == nil then --if no infomation for the class or identifyer were put into the function this will get every entity in the game
 
@@ -101,14 +101,14 @@ else
 end
 
 function removeentity( entorclass, identifyer, confirm )
-if entities == nil then entities = {["mainfuncs"]={}} end
+if entities == nil then entities = {["classmain"]={}} end
 if confirm == true and entorclass == nil and identifyer == nil then --ask for confirmation before deleting all entities which is what will happen if entorclass and identifyer == nil and confirmation is needed due to the fact that entities run everything so no entities no game
 for k, v in pairs( entities ) do
 for l, w in pairs( entities[k] ) do
-if k ~= "mainfuncs" then
+if k ~= "classmain" then
 
 runhook( "entity_onremove", _G["entities"][k][l] )
-if entities["mainfuncs"][k]["onremove"] ~= nil then entities["mainfuncs"][k]["onremove"]( _G["entities"][k][l] ) end
+if entities["classmain"][k]["onremove"] ~= nil then entities["classmain"][k]["onremove"]( _G["entities"][k][l] ) end
 for m,x in pairs( _G["entities"][k][l] ) do x = nil end --delets all entitis
 
 	_G["entities"][k][l] = nil --delets all entitis
@@ -127,7 +127,7 @@ for l, w in pairs( entities[k] ) do
 if w == entorclass then
 
 runhook( "entity_onremove", _G["entities"][k][l] )
-if entities["mainfuncs"][k]["onremove"] ~= nil then entities["mainfuncs"][k]["onremove"]( _G["entities"][k][l] ) end
+if entities["classmain"][k]["onremove"] ~= nil then entities["classmain"][k]["onremove"]( _G["entities"][k][l] ) end
 for m,x in pairs( _G["entities"][k][l] ) do m = nil end
 
 	_G["entities"][k][l] = nil  --deletes entity
@@ -147,7 +147,7 @@ if k == entorclass and l ~= nil then
 if l == identifyer or identifyer == nil then --checks  to see if an ents identifyer matches the identifyer entered of if no identifyer was entered
 
 runhook( "entity_onremove", _G["entities"][k][l] )
-if entities["mainfuncs"][k]["onremove"] ~= nil then entities["mainfuncs"][k]["onremove"]( _G["entities"][k][l] ) end
+if entities["classmain"][k]["onremove"] ~= nil then entities["classmain"][k]["onremove"]( _G["entities"][k][l] ) end
 for m,x in pairs( _G["entities"][k][l] ) do m = nil end
 
 	_G["entities"][k][l] = nil --deletes entity
@@ -162,14 +162,14 @@ end
 
 function runentitiesmainfuncs( func, addself, parameters, checkfunc ) --runs an entity main func on all entities. So it runs one of the following functions: loadresourcetypes, loadresources, init, onremove, think, draw, mousepress, keypress
 	local returners, vars = {}, parameters or {}
-if entities == nil then entities = {["mainfuncs"]={}} end
+if entities == nil then entities = {["classmain"]={}} end
 if entities ~= nil then
-for k,v in pairs( entities["mainfuncs"] ) do
-if entities["mainfuncs"][k] ~= nil and entities["mainfuncs"][k][func] ~= nil then
+for k,v in pairs( entities["classmain"] ) do
+if entities["classmain"][k] ~= nil and entities["classmain"][k][func] ~= nil then
 for l,w in pairs( entities[k] ) do
 if checkfunc == nil or checkfunc( w ) ~= false then
-if addself ~= false then returners[table.maxn( returners ) +1] = {[1]=w,[2]=entities["mainfuncs"][k][func]( w, unpack( vars ) )} end --add self adds the enity it is running the function for into the function
-if addself == false then returners[table.maxn( returners ) +1] = {[1]=w,[2]=entities["mainfuncs"][k][func]( unpack( vars ) )} end --returners contains all the returned infomation and this is usfull for drawing
+if addself ~= false then returners[table.maxn( returners ) +1] = {[1]=w,[2]=entities["classmain"][k][func]( w, unpack( vars ) )} end --add self adds the enity it is running the function for into the function
+if addself == false then returners[table.maxn( returners ) +1] = {[1]=w,[2]=entities["classmain"][k][func]( unpack( vars ) )} end --returners contains all the returned infomation and this is usfull for drawing
             end
          end
       end
@@ -185,9 +185,9 @@ end
 function runentityfunction( ent, func, addself, parameters ) --runs a function for a specific entity
 	local vars = parameters or {}
 if ent[func] == nil then
-if entities["mainfuncs"][ent.class][func] ~= nil then --checks if the function is a main func one
-if addself ~= false then return entities["mainfuncs"][ent.class][func]( ent, unpack( vars ) ) end 
-if addself == false then return entities["mainfuncs"][ent.class][func]( unpack( vars ) ) end
+if entities["classmain"][ent.class][func] ~= nil then --checks if the function is a main func one
+if addself ~= false then return entities["classmain"][ent.class][func]( ent, unpack( vars ) ) end 
+if addself == false then return entities["classmain"][ent.class][func]( unpack( vars ) ) end
 else
    return nil
    end
@@ -202,6 +202,7 @@ end
 
 function getentityfunction( ent, info ) --gets a function
 if ent[info] ~= nil and type( ent[info] ) == "function" then return ent[info] end
+if entities["classmain"][ent.class][info] ~= nil and type( entities["classmain"][ent.class][info] ) == "function" then return ent[info] end
 end
 
 function setentityinfo( ent, info, value ) --creates a bar in the most poitless way
@@ -211,6 +212,7 @@ end
 function getentityinfo( ent, info ) --gets the vars data
 if info == nil then return ent end
 if info ~= nil then return ent[info] end
+if entities["classmain"][ent.class][info] ~= nil then return ent[info] end
 end
 
 function emithook( hook, identifyer, func ) --creates a hook which can hook onto other functions if allowed and then when that other function is runned so is this
@@ -355,7 +357,7 @@ end
 if tformat == "XimagesaddnearX" then --pixle perfect quality images/4k
 	endfile = nil
 for k,v in pairs( file ) do
-nearedimg:setFilter( "nearest", "nearest" )
+v:setFilter( "nearest", "nearest" )
    end
 end
 
