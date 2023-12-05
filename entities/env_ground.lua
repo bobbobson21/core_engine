@@ -39,11 +39,6 @@ love.graphics.setLineWidth( 4 )
 love.graphics.setColor( 0.50, 0.50, 0.50, 1 )
 love.graphics.rectangle( "line", self.x +2, self.y +2, self.sizex -4, self.sizey -4 )
 
-if self.timeresistant == true then
-love.graphics.setColor( 0, 0.80, 0, 0.68 )
-love.graphics.rectangle( "line", self.x +16, self.y +16, self.sizex -32, self.sizey -32 )
-end
-
 love.graphics.setColor( 0.20, 0.20, 0.20, 1 )
 love.graphics.line( self.x +0.50, self.y +2, self.x +self.sizex -0.50, self.y +2 )
 love.graphics.setColor( 1, 1, 1, 1 )
