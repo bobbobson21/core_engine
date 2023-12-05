@@ -202,7 +202,7 @@ end
 
 function getentityfunction( ent, info ) --gets a function
 if ent[info] ~= nil and type( ent[info] ) == "function" then return ent[info] end
-if entities["classmain"][ent.class][info] ~= nil and type( entities["classmain"][ent.class][info] ) == "function" then return ent[info] end
+if entities["classmain"][ent.class][info] ~= nil and type( entities["classmain"][ent.class][info] ) == "function" then return entities["classmain"][ent.class][info] end
 end
 
 function setentityinfo( ent, info, value ) --creates a bar in the most poitless way
@@ -212,7 +212,7 @@ end
 function getentityinfo( ent, info ) --gets the vars data
 if info == nil then return ent end
 if info ~= nil then return ent[info] end
-if entities["classmain"][ent.class][info] ~= nil then return ent[info] end
+if entities["classmain"][ent.class][info] ~= nil then return entities["classmain"][ent.class][info] end
 end
 
 function emithook( hook, identifyer, func ) --creates a hook which can hook onto other functions if allowed and then when that other function is runned so is this
