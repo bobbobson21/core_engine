@@ -27,9 +27,10 @@ if self.groundtexture == nil then self.groundtexture = getresources( "XimageAloo
 if self.surfacetexture == nil then self.surfacetexture = getresources( "XimageAloopX", "groundover_texture") end
 if self.loperforgtex == nil then self.loperforgtex = love.graphics.newQuad( 0, 0, self.sizex, self.sizey, self.groundtexture:getWidth(), self.groundtexture:getHeight() ) end
 if self.loperforstex == nil then self.loperforstex = love.graphics.newQuad( 0, 0, self.sizex, self.surfacetexture:getWidth(), self.surfacetexture:getWidth(), self.surfacetexture:getHeight() ) end
+
 if emitcam() ~= nil then
-	local xcc, ycc, sxcc, sycc = emitcam().emitcamcoverage( emitcam() )
-if mua.isboxinbox( xcc, ycc, sxcc, sycc, self.x or 0, self.y or 0, self.sizex or 0, self.sizey or 0 ) == true then
+	local xcc, ycc, sxcc, sycc = runentityfunction( emitcam(), "emitcamcoverage", true, {} )
+if mua.isboxinbox( xcc, ycc, sxcc, sycc, self.x or 0, self.y or 0, self.sizex or 0, self.sizey or 0 ) == true or (xcc == 0 and ycc == 0 and sxcc == 0 and sycc == 0) then
 
 love.graphics.setColor( 1, 1, 1, 1 )
 love.graphics.draw( self.groundtexture, self.loperforgtex, self.x, self.y )

@@ -128,8 +128,8 @@ end
 function ENT.draw( self )
 if self.active ~= 0 and self.skin ~= nil then
 if emitcam() ~= nil then
-	local xcc, ycc, sxcc, sycc = emitcam().emitcamcoverage( emitcam() )
-if mua.isboxinbox( xcc, ycc, sxcc, sycc, self.x or 0, self.y or 0, self.optsx or 0, self.optsy or 0 ) == true then
+	local xcc, ycc, sxcc, sycc = runentityfunction( emitcam(), "emitcamcoverage", true, {} )
+if mua.isboxinbox( xcc, ycc, sxcc, sycc, self.x or 0, self.y or 0, self.sizex or 0, self.sizey or 0 ) == true or (xcc == 0 and ycc == 0 and sxcc == 0 and sycc == 0) then
 
 love.graphics.setColor( self.col["r"] /255, self.col["g"] /255, self.col["b"] /255, self.col["a"] /255 )
 if self.looping ~= true then love.graphics.draw( self.skin, self.x, self.y, self.rot, self.sizex, self.sizey, 0, 0 ) end
