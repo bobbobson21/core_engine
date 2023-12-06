@@ -35,21 +35,23 @@ end
 function levels.loadlevel( name )
 if levels["levels"] == nil then levels["levels"] = {} end
 if levels["levels"][name] == nil then return false end 
-if levels["levels"][name] ~= nil then 
 
 playerdespawn()
+
 for k,v in pairs( getentity( nil, nil ) ) do
 	v.KEEP_AFTER_LEVEL_UNLOAD = true
 end
 for k,v in pairs( getentity( nil, nil ) ) do
 if v.KEEP_AFTER_LEVEL_UNLOAD ~= true then removeentity( v ) end
 end
+
+soundsystem.replaymusic()
+love.mouse.setVisible( false )
 particlesystem.removeparticle( nil, true )
 runentityfunction( getentity( "env_sky", "sky" ), "resetclouds", true, {} )
 
 	local menu = getentity( "point_mainmenu", "mainmenu" )
 
-	menu.drawbackground = nil
 	menu.pauseon = true
 	menu.qgtext = "exit level"
 	menu.pgtext ="resume game"
@@ -62,17 +64,36 @@ runentityfunction( getentity( "env_sky", "sky" ), "resetclouds", true, {} )
 
 	levels.activelevel = name
 levels["levels"][name]()
+
    return true
-   end
+end
+
+function levels.loadlevelraw( name )
+if levels["levels"] == nil then levels["levels"] = {} end
+if levels["levels"][name] == nil then return false end 
+
+playerdespawn()
+
+for k,v in pairs( getentity( nil, nil ) ) do
+	v.KEEP_AFTER_LEVEL_UNLOAD = true
+end
+for k,v in pairs( getentity( nil, nil ) ) do
+if v.KEEP_AFTER_LEVEL_UNLOAD ~= true then removeentity( v ) end
+end
+
+particlesystem.removeparticle( nil, true )
+runentityfunction( getentity( "env_sky", "sky" ), "resetclouds", true, {} )
+
+	levels.activelevel = name
+levels["levels"][name]()
+
+   return true
 end
 
 function levels.unloadlevel()
 if levels["levels"] == nil then levels["levels"] = {} end
 
 playerdespawn()
-for k,v in pairs( getentity( nil, nil ) ) do
-	v.KEEP_AFTER_LEVEL_UNLOAD = true
-end
 for k,v in pairs( getentity( nil, nil ) ) do
 if v.KEEP_AFTER_LEVEL_UNLOAD ~= true then removeentity( v ) end
 end
@@ -83,7 +104,6 @@ runentityfunction( getentity( "env_sky", "sky" ), "resetclouds", true, {} )
 
 	local menu = getentity( "point_mainmenu", "mainmenu" )
 
-	menu.drawbackground = true
 	menu.pauseon = nil
 	menu.qgtext = "quit game"
 	menu.pgtext = "play game"

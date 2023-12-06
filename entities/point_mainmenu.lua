@@ -19,6 +19,7 @@ function ENT.init( self )
 	self.pgtext = "play game"
 	self.qgtext = "quit game"
 	self.startlevel = "lv1"
+	self.backgroundlevel = "lvl_bg"
 	
 	self.menu = 1
 	self.darkness = 0
@@ -46,6 +47,8 @@ playersetcontroles( {["left"]=self.settings[4],["right"]=self.settings[3],["jump
 end
 
 function ENT.think( self )
+if levels.activelevel == nil and self.backgroundlevel ~= nil and self.pauseon ~= true and self.qgtext == "quit game" and self.pgtext == "play game" then levels.loadlevelraw( self.backgroundlevel ) end
+
 if self.menu == -1 and self.active ~= 0 then
 if mua.isboxinbox( ( ( love.graphics.getWidth() /2 ) +love.graphics.getWidth() /4 ) +19, ( love.graphics.getHeight() /1.40 ) -340, 60, 372, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true then 
 if love.mouse.isDown( 1 ) == true then
