@@ -4,6 +4,8 @@
 function ENT.setskin( self, texture ) --sets the texture also put in a table of textures if you wish for an animation
 	self.anim = nil
 	self.skinquads = nil
+	self.skinisfromfile = true
+	
 if type( texture ) ~= "table" then 
 	self.skin = love.graphics.newImage( texture )
 	self.optsx, self.optsy = self.skin:getWidth(), self.skin:getHeight()
@@ -32,28 +34,58 @@ end
    end
 end
 
+function ENT.setskinfromfile( self, texture ) --sets the texture also put in a table of textures if you wish for an animation
+	self.anim = nil
+	self.skinquads = nil
+	self.skinisfromfile = true
+	
+if type( texture ) ~= "table" then 
+	self.skin = texture
+	self.optsx, self.optsy = self.skin:getWidth(), self.skin:getHeight()
+if self.looping == true then
+	self.optsx, self.optsy = self.skinquadsize["sx"], self.skinquadsize["sy"]
+	self.skinquad = love.graphics.newQuad( 0, 0, self.skinquadsize["sx"], self.skinquadsize["sy"], self.skin:getWidth() *( self.sizex or 1 ), self.skin:getHeight() *( self.sizey or 1 ) )
+end
+
+else
+	self.anim = {}
+	self.skinquads = {}
+for z = 1, table.maxn( texture ) do
+	self.anim[z] = love.graphics.newImage( texture[z] )
+if self.looping == true then
+	self.skinquads[z] = love.graphics.newQuad( 0, 0, self.skinquadsize["sx"], self.skinquadsize["sy"], self.skin:getWidth() *( self.sizex or 1 ), self.skin:getHeight() *( self.sizey or 1 ) )
+   end
+end
+	local frame = self.animframeontexload or 1
+	self.skin = self.anim[frame]
+	self.animframeontexload = nil
+	self.optsx, self.optsy = self.skin:getWidth(), self.skin:getHeight()
+   end
+end
+
+
 function ENT.setloopandsize( self, looper, sxa, sya ) --sets the size of the ent and it also makes it repeat it it is made to repeat
 if self.skin ~= nil then
 	self.optsx, self.optsy = sxa, sya
 if self.anim == nil then
 if looper == true then
 	self.skinquad = love.graphics.newQuad( 0, 0, sxa, sya, self.skin:getWidth() *( self.sizex or 1 ), self.skin:getHeight() *( self.sizey or 1 ) )
-self.skin:setWrap( "repeat", "repeat" ) 
+if self.skinisfromfile ~= true then self.skin:setWrap( "repeat", "repeat" )  end
 end
 if looper == false then
 	self.skinquad = nil
-self.skin:setWrap( "clamp", "clamp" )
+if self.skinisfromfile ~= true then  self.skin:setWrap( "clamp", "clamp" ) end
 end
 else
 	self.skinquads = {}
 for z = 1, table.maxn( self.anim ) do
 if looper == true then
 self.skinquads[z] = love.graphics.newQuad( 0, 0, sxa, sya, self.anim[z]:getWidth() *( self.sizex or 1 ), self.anim[z]:getHeight() *( self.sizey or 1 ) )
-self.anim[z]:setWrap( "repeat", "repeat" ) 
+if self.skinisfromfile ~= true then self.anim[z]:setWrap( "repeat", "repeat" ) end
 end
 if looper == false then
 	self.skinquads = nil
-self.skin:setWrap( "clamp", "clamp" )
+if self.skinisfromfile ~= true then self.skin:setWrap( "clamp", "clamp" ) end
          end
       end
    end
@@ -63,9 +95,10 @@ end
 end
 
 function ENT.setfilter( self, filterr ) --sets filter
+if self.skinisfromfile == true then return end 
 if self.skin ~= nil then
 if self.anim == nil then
-	self.skin:setFilter( filterr, filterr )
+self.skin:setFilter( filterr, filterr )
 else
 for z = 1, table.maxn( self.anim ) do
 	self.anim[z]:setFilter( filterr, filterr )
@@ -139,6 +172,17 @@ love.graphics.setColor( 1, 1, 1, 1 )
          end
       end
    end
+end
+
+function ENT.onremove()
+if self.skinisfromfile == true then return end 
+if self.anim ~= nil then
+for z = 1, table.maxn( self.anim ) do
+self.anim[z]:release()
+   end
+end
+	self.anim = nil
+self.skin:release()
 end
 
 emitentitytype( "env_scenery", ENT )
