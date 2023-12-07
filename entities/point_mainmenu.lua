@@ -20,6 +20,14 @@ function ENT.init( self )
 	self.qgtext = "quit game"
 	self.startlevel = "lv1"
 	self.backgroundlevel = "lvl_bg"
+	self.menubackcolor = {0,0,0,0.60}
+	self.menuselectedbackcolor = {0,0,0,0.80}
+	self.menubordercolor = {1,1,1,1}
+	self.menubackcolor_noninterractive = {0,0,0,0}
+	self.menubordercolor_noninterractive = {0.80,0.80,0.80,0.80,1}
+	
+	self.menutextcolor = {1,1,1,1}
+
 	
 	self.menu = 1
 	self.darkness = 0
@@ -83,12 +91,12 @@ love.graphics.setLineWidth( 4 )
 love.graphics.setColor( 0, 0, 0, self.darkness /255 )
 love.graphics.rectangle( "fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight() )
 
-love.graphics.setColor( 1, 1, 1, 1 )
+love.graphics.setColor( unpack( self.menubordercolor ) )
 
 if self.menuloadicontime ~= nil then
 if emittime() <= self.menuloadicontime then
 if self.rotloadicon == nil then self.rotloadicon = 0 end
-love.graphics.setColor( 1, 1, 1, 1 )
+love.graphics.setColor( unpack( self.menubordercolor ) )
 if self.menuloadiconcolor ~= nil then love.graphics.setColor( self.menuloadiconcolor["r"] /255, self.menuloadiconcolor["g"] /255, self.menuloadiconcolor["b"] /255, 1 ) end
 love.graphics.push()
 love.graphics.translate( love.graphics.getWidth() -30, 30 )
@@ -105,26 +113,26 @@ if self.menu == 1 then
 love.graphics.setColor( 0, 0, 0, 1 )
 love.graphics.setFont( getresources("XfontX", "menutitle_font") )
 love.graphics.print( gamewindowtitle(), ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menutitle_font"):getWidth( gamewindowtitle() ) /2 ) +6, ( love.graphics.getHeight() /1.40 ) -348 +6 )
-love.graphics.setColor( 1, 1, 1, 1 )
+love.graphics.setColor( unpack( self.menutextcolor ) )
 love.graphics.print( gamewindowtitle(), ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menutitle_font"):getWidth( gamewindowtitle() ) /2 ), ( love.graphics.getHeight() /1.40 ) -348 )
 
-love.graphics.setColor( 0, 0, 0, 0.60 )
-if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -240, love.graphics.getWidth() /2, 80, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true then love.graphics.setColor( 0, 0, 0, 0.80 ) end
+love.graphics.setColor( unpack( self.menubackcolor ) )
+if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -240, love.graphics.getWidth() /2, 80, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true then love.graphics.setColor( unpack( self.menuselectedbackcolor ) ) end
 love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -240, love.graphics.getWidth() /2, 80 )
-love.graphics.setColor( 0, 0, 0, 0.60 )
-if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -140, love.graphics.getWidth() /2, 80, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true then love.graphics.setColor( 0, 0, 0, 0.80 ) end
+love.graphics.setColor( unpack( self.menubackcolor ) )
+if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -140, love.graphics.getWidth() /2, 80, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true then love.graphics.setColor( unpack( self.menuselectedbackcolor ) ) end
 love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -140, love.graphics.getWidth() /2, 80 )
-love.graphics.setColor( 0, 0, 0, 0.60 )
-if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -40, love.graphics.getWidth() /2, 80, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true then love.graphics.setColor( 0, 0, 0, 0.80 ) end
+love.graphics.setColor( unpack( self.menubackcolor ) )
+if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -40, love.graphics.getWidth() /2, 80, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true then love.graphics.setColor( unpack( self.menuselectedbackcolor ) ) end
 love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -40, love.graphics.getWidth() /2, 80 )
-love.graphics.setColor( 0, 0, 0, 0.60 )
+love.graphics.setColor( unpack( self.menubackcolor ) )
 
-love.graphics.setColor( 1, 1, 1, 1 )
-
+love.graphics.setColor( unpack( self.menubordercolor ) )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -240, love.graphics.getWidth() /2, 80 )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -140, love.graphics.getWidth() /2, 80 )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -40, love.graphics.getWidth() /2, 80 )
 
+love.graphics.setColor( unpack( self.menutextcolor ) )
 love.graphics.setFont( getresources("XfontX", "menubutton_font") )
 love.graphics.print( self.pgtext, ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menubutton_font"):getWidth( self.pgtext ) /2 ), ( love.graphics.getHeight() /1.40 ) -220 )
 love.graphics.print( "settings", ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menubutton_font"):getWidth( "settings" ) /2 ), ( love.graphics.getHeight() /1.40 ) -120 )
@@ -136,44 +144,52 @@ if self.menu == -1 then
 love.graphics.setColor( 0, 0, 0, 1 )
 love.graphics.setFont( getresources("XfontX", "menutitle_font") )
 love.graphics.print( "settings", ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menutitle_font"):getWidth( "settings" ) /2 ) +6, ( love.graphics.getHeight() /1.40 ) -448 +6 )
-love.graphics.setColor( 1, 1, 1, 1 )
+love.graphics.setColor( unpack( self.menutextcolor ) )
 love.graphics.print( "settings", ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menutitle_font"):getWidth( "settings" ) /2 ), ( love.graphics.getHeight() /1.40 ) -448 )
 
-love.graphics.setColor( 0, 0, 0, 0.60 )
-if mua.isboxinbox( ( ( love.graphics.getWidth() /2 ) +love.graphics.getWidth() /4 ) +19, ( love.graphics.getHeight() /1.40 ) -340, 60, 372, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true then love.graphics.setColor( 0, 0, 0, 0.80 ) end
+love.graphics.setColor( unpack( self.menubackcolor ) )
+if mua.isboxinbox( ( ( love.graphics.getWidth() /2 ) +love.graphics.getWidth() /4 ) +19, ( love.graphics.getHeight() /1.40 ) -340, 60, 372, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true then love.graphics.setColor( unpack( self.menuselectedbackcolor ) ) end
 love.graphics.rectangle( "fill", ( ( love.graphics.getWidth() /2 ) +love.graphics.getWidth() /4 ) +19, ( love.graphics.getHeight() /1.40 ) -340, 61, 372 )
-love.graphics.setColor( 0, 0, 0, 0.60 )
-if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) +52, love.graphics.getWidth() /2, 80, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true then love.graphics.setColor( 0, 0, 0, 0.80 ) end
+love.graphics.setColor( unpack( self.menubackcolor ) )
+if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) +52, love.graphics.getWidth() /2, 80, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true then love.graphics.setColor( unpack( self.menuselectedbackcolor ) ) end
 love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) +52, love.graphics.getWidth() /2, 80 )
-love.graphics.setColor( 0, 0, 0, 0.60 )
-love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -340, love.graphics.getWidth() /2, 372 )
 
-love.graphics.setColor( 0, 0, 0, 0 )
-if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -284, ( love.graphics.getWidth() /2 ) -301, 40, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true and self.cursentbox == nil or self.cursentbox == 1 then love.graphics.setColor( 0, 0, 0, 0.60 ) end
+love.graphics.setColor( unpack( self.menubackcolor ) )
+love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -340, love.graphics.getWidth() /2, 372 )
+love.graphics.setColor( unpack( self.menubackcolor ) )
+if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -284, ( love.graphics.getWidth() /2 ) -301, 40, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true and self.cursentbox == nil or self.cursentbox == 1 then love.graphics.setColor( unpack( self.menuselectedbackcolor ) ) end
 love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -284, ( love.graphics.getWidth() /2 ) -301, 40 )
-love.graphics.setColor( 0, 0, 0, 0 )
-if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -234, ( love.graphics.getWidth() /2 ) -301, 40, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true and self.cursentbox == nil or self.cursentbox == 2 then love.graphics.setColor( 0, 0, 0, 0.60 ) end
+love.graphics.setColor( unpack( self.menubackcolor ) )
+if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -234, ( love.graphics.getWidth() /2 ) -301, 40, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true and self.cursentbox == nil or self.cursentbox == 2 then love.graphics.setColor( unpack( self.menuselectedbackcolor ) ) end
 love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -234, ( love.graphics.getWidth() /2 ) -301, 40 )
-love.graphics.setColor( 0, 0, 0, 0 )
-if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -184, ( love.graphics.getWidth() /2 ) -301, 40, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true and self.cursentbox == nil or self.cursentbox == 3 then love.graphics.setColor( 0, 0, 0, 0.60 ) end
+love.graphics.setColor( unpack( self.menubackcolor ) )
+if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -184, ( love.graphics.getWidth() /2 ) -301, 40, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true and self.cursentbox == nil or self.cursentbox == 3 then love.graphics.setColor( unpack( self.menuselectedbackcolor ) ) end
 love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -184, ( love.graphics.getWidth() /2 ) -301, 40 )
-love.graphics.setColor( 0, 0, 0, 0 )
-if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -134, ( love.graphics.getWidth() /2 ) -301, 40, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true and self.cursentbox == nil or self.cursentbox == 4 then love.graphics.setColor( 0, 0, 0, 0.60 ) end
+love.graphics.setColor( unpack( self.menubackcolor ) )
+if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -134, ( love.graphics.getWidth() /2 ) -301, 40, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true and self.cursentbox == nil or self.cursentbox == 4 then love.graphics.setColor( unpack( self.menuselectedbackcolor ) ) end
 love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -134, ( love.graphics.getWidth() /2 ) -301, 40 )
-love.graphics.setColor( 0, 0, 0, 0 )
-if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -84, ( love.graphics.getWidth() /2 ) -301, 40, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true and self.cursentbox == nil or self.cursentbox == 5 then love.graphics.setColor( 0, 0, 0, 0.60 ) end
+love.graphics.setColor( unpack( self.menubackcolor ) )
+if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -84, ( love.graphics.getWidth() /2 ) -301, 40, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true and self.cursentbox == nil or self.cursentbox == 5 then love.graphics.setColor( unpack( self.menuselectedbackcolor ) ) end
 love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -84, ( love.graphics.getWidth() /2 ) -301, 40 )
-love.graphics.setColor( 0, 0, 0, 0 )
-if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -34, ( love.graphics.getWidth() /2 ) -301, 40, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true and self.cursentbox == nil or self.cursentbox == 6 then love.graphics.setColor( 0, 0, 0, 0.60 ) end
+love.graphics.setColor( unpack( self.menubackcolor ) )
+if mua.isboxinbox( ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -34, ( love.graphics.getWidth() /2 ) -301, 40, love.mouse.getX(), love.mouse.getY(), 1, 1 ) == true and self.cursentbox == nil or self.cursentbox == 6 then love.graphics.setColor( unpack( self.menuselectedbackcolor ) ) end
 love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -34, ( love.graphics.getWidth() /2 ) -301, 40 )
 
-love.graphics.setColor( 1, 1, 1, 1 )
+love.graphics.setColor( unpack( self.menubackcolor_noninterractive ) )
+love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +33, ( love.graphics.getHeight() /1.40 ) -284, 229, 40 )
+love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +33, ( love.graphics.getHeight() /1.40 ) -234, 229, 40 )
+love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +33, ( love.graphics.getHeight() /1.40 ) -184, 229, 40 )
+love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +33, ( love.graphics.getHeight() /1.40 ) -134, 229, 40 )
+love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +33, ( love.graphics.getHeight() /1.40 ) -84, 229, 40 )
+love.graphics.rectangle( "fill", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +33, ( love.graphics.getHeight() /1.40 ) -34, 229, 40 )
+
+love.graphics.setColor( unpack( self.menubordercolor ) )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) +52, love.graphics.getWidth() /2, 80 )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4, ( love.graphics.getHeight() /1.40 ) -340, love.graphics.getWidth() /2, 372 )
 love.graphics.rectangle( "line", ( ( love.graphics.getWidth() /2 ) +love.graphics.getWidth() /4 ) +19, ( love.graphics.getHeight() /1.40 ) -340, 61, 372 )
-
 love.graphics.rectangle( "fill", math.floor( ( ( ( love.graphics.getWidth() /2 ) +love.graphics.getWidth() /4 ) +50.50 ) -( getresources("XfontX", "menubutton_font"):getWidth( "M" ) /2 ) ), ( love.graphics.getHeight() /1.40 ) -290, 32, ( self.musicvolume /100 ) *309 )
 
+love.graphics.setColor( unpack( self.menutextcolor ) )
 love.graphics.setFont( getresources("XfontX", "menubutton_font") )
 love.graphics.print( "M", math.floor( ( ( ( love.graphics.getWidth() /2 ) +love.graphics.getWidth() /4 ) +50.50 ) -( getresources("XfontX", "menubutton_font"):getWidth( "M" ) /2 ) ), math.floor( ( love.graphics.getHeight() /1.40 ) -330 ) )
 love.graphics.print( "back to menu and apply", math.floor( ( love.graphics.getWidth() /2 ) -( getresources("XfontX", "menubutton_font"):getWidth( "back to menu and apply" ) /2 ) ), math.floor( ( love.graphics.getHeight() /1.40 ) +72 ) )
@@ -211,14 +227,14 @@ love.graphics.print( ds[4], math.floor( ( ( love.graphics.getWidth() /2 ) +122 )
 love.graphics.print( ds[5], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( getresources("XfontX", "menuaction_font"):getWidth( ds[5] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -80 ) +0.50 ) )
 love.graphics.print( ds[6], math.floor( ( ( love.graphics.getWidth() /2 ) +122 ) -( getresources("XfontX", "menuaction_font"):getWidth( ds[6] ) /2 ) +0.50 ), math.floor( ( ( love.graphics.getHeight() /1.40 ) -30 ) +0.50 ) )
 
-love.graphics.setColor( 0.80, 0.80, 0.80, 1 )
+love.graphics.setColor( unpack( self.menubordercolor_noninterractive ) )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +33, ( love.graphics.getHeight() /1.40 ) -284, 229, 40 )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +33, ( love.graphics.getHeight() /1.40 ) -234, 229, 40 )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +33, ( love.graphics.getHeight() /1.40 ) -184, 229, 40 )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +33, ( love.graphics.getHeight() /1.40 ) -134, 229, 40 )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +33, ( love.graphics.getHeight() /1.40 ) -84, 229, 40 )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +33, ( love.graphics.getHeight() /1.40 ) -34, 229, 40 )
-love.graphics.setColor( 1, 1, 1, 1 )
+love.graphics.setColor( unpack( self.menubordercolor ) )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -284, ( love.graphics.getWidth() /2 ) -301, 40 )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -234, ( love.graphics.getWidth() /2 ) -301, 40 )
 love.graphics.rectangle( "line", ( love.graphics.getWidth() /2 ) -love.graphics.getWidth() /4 +271, ( love.graphics.getHeight() /1.40 ) -184, ( love.graphics.getWidth() /2 ) -301, 40 )
