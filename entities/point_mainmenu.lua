@@ -252,19 +252,21 @@ end
 function ENT.mousepress( self, x, y, side, touching )
 	local escapejam = ""
 if self.pauseon == true then
-if side == self.pausekey then
-if side ~= escapejam then
-	local done = false
-if self.active ~= 0 and done == false then
-	self.active, self.darknessdir, done = 0, 0, true
+if key == self.pausekey then
+if key ~= escapejam then
+
+if self.active ~= 0 then
+	self.active, self.darknessdir = 0, 0
 levels.freezelevel( false )
 if gameindevmode() ~= true then love.mouse.setVisible( false ) end
-end
-if self.active == 0 and done == false then
-	self.active, self.darknessdir, done = 1, 1, true
+else
+if self.active == 0 then
+	self.active, self.darknessdir = 1, 1
 levels.freezelevel( true )
 if gameindevmode() ~= true then love.mouse.setVisible( true ) end
+   end
 end
+
 	self.cursentbox = nil
 	self.menu = 1
 	  end
@@ -378,17 +380,19 @@ end
 if self.pauseon == true then
 if key == self.pausekey then
 if key ~= escapejam then
-	local done = false
+
 if self.active ~= 0 then
 	self.active, self.darknessdir = 0, 0
 levels.freezelevel( false )
 if gameindevmode() ~= true then love.mouse.setVisible( false ) end
-end
+else
 if self.active == 0 then
 	self.active, self.darknessdir = 1, 1
 levels.freezelevel( true )
 if gameindevmode() ~= true then love.mouse.setVisible( true ) end
+   end
 end
+
 	self.cursentbox = nil
 	self.menu = 1
 	     end

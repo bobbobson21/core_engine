@@ -38,15 +38,18 @@ if levels["levels"][name] == nil then return false end
 
 playerdespawn()
 
+if levels.markednonunloadents ~= true then
 for k,v in pairs( getentity( nil, nil ) ) do
 	v.KEEP_AFTER_LEVEL_UNLOAD = true
+end
+	levels.markednonunloadents = true
 end
 for k,v in pairs( getentity( nil, nil ) ) do
 if v.KEEP_AFTER_LEVEL_UNLOAD ~= true then removeentity( v ) end
 end
 
 soundsystem.replaymusic()
-love.mouse.setVisible( false )
+if gameindevmode() ~= true then love.mouse.setVisible( false ) end
 particlesystem.removeparticle( nil, true )
 runentityfunction( getentity( "env_sky", "sky" ), "resetclouds", true, {} )
 
@@ -74,8 +77,11 @@ if levels["levels"][name] == nil then return false end
 
 playerdespawn()
 
+if levels.markednonunloadents ~= true then
 for k,v in pairs( getentity( nil, nil ) ) do
 	v.KEEP_AFTER_LEVEL_UNLOAD = true
+end
+	levels.markednonunloadents = true
 end
 for k,v in pairs( getentity( nil, nil ) ) do
 if v.KEEP_AFTER_LEVEL_UNLOAD ~= true then removeentity( v ) end
@@ -85,6 +91,7 @@ particlesystem.removeparticle( nil, true )
 runentityfunction( getentity( "env_sky", "sky" ), "resetclouds", true, {} )
 
 	levels.activelevel = name
+	levels.levelcontentloaded = true
 levels["levels"][name]()
 
    return true
@@ -94,11 +101,15 @@ function levels.unloadlevel()
 if levels["levels"] == nil then levels["levels"] = {} end
 
 playerdespawn()
+
+if levels.markednonunloadents == true then
 for k,v in pairs( getentity( nil, nil ) ) do
 if v.KEEP_AFTER_LEVEL_UNLOAD ~= true then removeentity( v ) end
+   end
 end
+
 soundsystem.replaymusic()
-love.mouse.setVisible( true )
+if gameindevmode() ~= true then love.mouse.setVisible( true ) end
 particlesystem.removeparticle( nil, true )
 runentityfunction( getentity( "env_sky", "sky" ), "resetclouds", true, {} )
 
@@ -122,3 +133,4 @@ emitentitytype( "point_levels", levels )
 
 	local ent = spawnentity( "point_levels", "levelmanager" )
 	
+|

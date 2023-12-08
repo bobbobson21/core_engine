@@ -29,7 +29,6 @@ if playerloaded() == false then
 	local ent = spawnentity( "obj_player", "player" )
 	ent.x = x
 	ent.y = y
-	ent.notreportal = dontdoextra --desides if spawn effect should be done
 ENT.dospawnstuff( ent, x, y )
 return ent
 end
@@ -37,7 +36,6 @@ if playerloaded() == true then
 	local ent = getentity( "obj_player", "player" )
 	ent.x = x
 	ent.y = y
-	ent.notreportal = dontdoextra
 ent.dospawnstuff( ent, x, y )
    return ent
    end
@@ -262,8 +260,8 @@ end
 return 0
 end
 
-function ENT.mousepress( self, x, y, side, touching ) self.buttonpress( self, "mouse", side ) end
-function ENT.keypress( self, key, scancode, isrepet ) self.buttonpress( self, "key", key ) end
+function ENT.mousepress( self, x, y, side, touching ) runentityfunction( self, "buttonpress", true, {"mouse", side} ) end
+function ENT.keypress( self, key, scancode, isrepet ) runentityfunction( self, "buttonpress", true, {"key", key} ) end
 
 emitentitytype( "obj_player", ENT )
 	
