@@ -137,16 +137,12 @@ end
 
 if mua.controlemaster( controles["right"] ) == true and self.blockinput ~= true then --walk right
 if self.injump ~= true and self.jumpland ~= true then
-if self.holdingcube ~= nil then self.holdingcubeoffsetx = self.sizex end
-if self.dotimerecoarding == true then self.recactcube = "+" end
 	self.x = self.x +4
    end
 end
 
 if mua.controlemaster( controles["left"] ) == true and self.blockinput ~= true then --walk left
 if self.injump ~= true and self.jumpland ~= true then
-if self.holdingcube ~= nil then self.holdingcubeoffsetx = -( self.holdingcube["sx"] ) end
-if self.dotimerecoarding == true then self.recactcube = "-" end
 	self.x = self.x -4
    end
 end

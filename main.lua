@@ -566,6 +566,8 @@ function love.load() --stats the game DO NOT USE
 love.window.setTitle( tostring( windowtitle ) )
 love.window.minimize() --to help pervent visually bugs on windows
 
+--math.randomseed( os.time() /100000 )
+
 function emittimesync() return 0 end  --if sync is above 2 that meas you should NOT spawn anything in if you are spwning something in thougth think
 function emittime() return 0.0001 end --emittime is our time constant 
 function emittimeadd( addto ) return ( tonumber( "0."..string.sub( "0000", 1, 4 -string.len( tostring( addto ) ) )..tostring( addto ) ) +0.0001 ) end
@@ -681,11 +683,10 @@ for z = 1, math.floor( emitthink ) do --dose the running of the think functions 
 runhook( "think.bypass", {} )
 if timers ~= nil then
 for k,v in pairs( timers ) do
-if emittime() >= v.num and v.stoptimer ~= true and ( v.dothinkunder["bypassed"] == true ) then
+if emittime() >= v.num and v.stoptimer ~= true and ( v.dothinkunder ~= nil and v.dothinkunder["bypassed"] == true ) then
 	v.numlog = v.numlog +1
 v.func( v.numlog )
-if v.reloop ~= true then timers[k], v = nil, nil end
-	v.reloop = nil
+if v.reloop ~= true then timers[k], v = nil, nil else v.reloop = nil end
             end
          end
       end
@@ -701,8 +702,7 @@ for k,v in pairs( timers ) do
 if emittime() >= v.num and v.stoptimer ~= true and ( v.dothinkunder == nil or v.dothinkunder["normal"] == true ) then
 	v.numlog = v.numlog +1
 v.func( v.numlog )
-if v.reloop ~= true then timers[k], v = nil, nil end
-	v.reloop = nil
+if v.reloop ~= true then timers[k], v = nil, nil else v.reloop = nil end
                end
             end
          end
