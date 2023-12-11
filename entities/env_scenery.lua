@@ -13,7 +13,7 @@ if self.filter ~= nil then self.skin:setFilter( self.filter, self.filter ) end
 if self.looping == true then
 	self.optsx, self.optsy = self.skinquadsize["sx"], self.skinquadsize["sy"]
 	self.skinquad = love.graphics.newQuad( 0, 0, self.skinquadsize["sx"], self.skinquadsize["sy"], self.skin:getWidth() *( self.sizex or 1 ), self.skin:getHeight() *( self.sizey or 1 ) )
-self.skin:setWrap( "repeat", "repeat" )
+if self.skinisfromfile ~= true then self.skin:setWrap( "repeat", "repeat" ) end
 end
 
 else
@@ -24,7 +24,7 @@ for z = 1, table.maxn( texture ) do
 if self.filter ~= nil then self.anim[z]:setFilter( self.filter, self.filter ) end
 if self.looping == true then
 	self.skinquads[z] = love.graphics.newQuad( 0, 0, self.skinquadsize["sx"], self.skinquadsize["sy"], self.skin:getWidth() *( self.sizex or 1 ), self.skin:getHeight() *( self.sizey or 1 ) )
-self.anim[z]:setWrap( "repeat", "repeat" )
+if self.skinisfromfile ~= true then self.anim[z]:setWrap( "repeat", "repeat" ) end
    end
 end
 	local frame = self.animframeontexload or 1
@@ -162,19 +162,30 @@ function ENT.draw( self )
 if self.active ~= 0 and self.skin ~= nil then
 if emitcam() ~= nil then
 	local xcc, ycc, sxcc, sycc = runentityfunction( emitcam(), "emitcamcoverage", true, {} )
-if mua.isboxinbox( xcc, ycc, sxcc, sycc, self.x or 0, self.y or 0, self.sizex or 0, self.sizey or 0 ) == true or (xcc == 0 and ycc == 0 and sxcc == 0 and sycc == 0) then
 
 love.graphics.setColor( self.col["r"] /255, self.col["g"] /255, self.col["b"] /255, self.col["a"] /255 )
-if self.looping ~= true then love.graphics.draw( self.skin, self.x, self.y, self.rot, self.sizex, self.sizey, 0, 0 ) end
-if self.looping == true and self.skinquad ~= nil then love.graphics.draw( self.skin, self.skinquad, self.x, self.y ) end
-love.graphics.setColor( 1, 1, 1, 1 )
 
-         end
+if self.x ~= nil and self.y ~= nil and self.skin ~= nil then
+if self.looping ~= true then
+if mua.isboxinbox( xcc, ycc, sxcc, sycc, self.x, self.y, self.skin:getWidth(), self.skin:getHeight() ) == true or (xcc == 0 and ycc == 0 and sxcc == 0 and sycc == 0) then
+love.graphics.draw( self.skin, self.x, self.y, self.rot, self.sizex, self.sizey, 0, 0 )
+   end
+end
+if self.looping == true and self.skinquad ~= nil then
+if mua.isboxinbox( xcc, ycc, sxcc, sycc, self.x, self.y, self.optsx, self.optsy ) == true or (xcc == 0 and ycc == 0 and sxcc == 0 and sycc == 0) then
+love.graphics.draw( self.skin, self.skinquad, self.x, self.y )
       end
    end
 end
 
-function ENT.onremove()
+love.graphics.setColor( 1, 1, 1, 1 )
+
+
+      end
+   end
+end
+
+function ENT.onremove( self )
 if self.skinisfromfile == true then return end 
 if self.anim ~= nil then
 for z = 1, table.maxn( self.anim ) do
