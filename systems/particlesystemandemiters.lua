@@ -73,7 +73,7 @@ love.graphics.setColor( r, g, b, a )
 love.graphics.push()
 love.graphics.translate( x, y )
 love.graphics.rotate( ang )
-love.graphics.translate( 2 *size, 2 *size )
+love.graphics.translate( -2 *size, -2 *size )
 love.graphics.rectangle("fill", 0, 0, 4 *size, 4 *size )
 love.graphics.pop()
    end)
@@ -150,4 +150,6 @@ runhook( "particle_postdraw", {v} ) --use this to draw after all particles
    end
 end
 
-emitentitytype( "particleemiter", {["loadresources"]=particlesystem.loadresources,["init"]=particlesystem.init,["onremove"]=particlesystem.onremove,["think"]=particlesystem.think,["draw"]=particlesystem.draw,["mousepress"]=particlesystem.mousepress,["keypress"]=particlesystem.keypress,} )
+emitentitytype( "particleemiter", particlesystem )
+
+	local ent = spawnentity( "particleemiter", "particalcontrol" )

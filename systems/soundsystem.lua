@@ -194,7 +194,7 @@ v[1]:play()
    end
 end
 
-emitentitytype( "soundsystem", {["loadresources"]=soundsystem.loadresources,["init"]=soundsystem.init,["onremove"]=soundsystem.onremove,["think"]=soundsystem.think,["draw"]=soundsystem.draw,["mousepress"]=soundsystem.mousepress,["keypress"]=soundsystem.keypress,} )
+emitentitytype( "soundsystem", soundsystem )
 
 	local ent = spawnentity( "soundsystem", "soundsystement" )
 
