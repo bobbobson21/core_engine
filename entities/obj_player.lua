@@ -93,7 +93,6 @@ emitresources( "XnewsoundX", "playerjump_sound2", {[1]="sounds/player/player_jum
 end
 
 function ENT.init( self )
-	self.gravityfloor = 0
 	self.x, self.y = 0, 0
 	self.sizex, self.sizey = 40, 40
 	self.hboxsx, self.hboxsy = 40, 40
@@ -155,8 +154,6 @@ if mua.isboxinbox( self.hboxx, self.hboxy, self.hboxsx, self.hboxsy, v.x, v.y -1
 if ( v.collideablegroup == nil and self.y +( self.hboxsy /2 ) <= v.y ) or ( v.collideablegroup ~= nil and v.collideablegroup( self, v, "up" ) ~= false ) then
 if self.y +self.hboxsy > v.y then self.y = v.y -( self.hboxsy ) end
 	gravity = false
-if self.gravityfloor ~= self.y then self.gravityfloor = self.y end
-
    end
 end
 
