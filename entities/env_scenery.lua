@@ -4,7 +4,7 @@
 function ENT.setskin( self, texture ) --sets the texture also put in a table of textures if you wish for an animation
 	self.anim = nil
 	self.skinquads = nil
-	self.skinisfromfile = true
+	self.skinisfromfile = false
 	
 if type( texture ) ~= "table" then 
 	self.skin = love.graphics.newImage( texture )
@@ -167,7 +167,7 @@ love.graphics.setColor( self.col["r"] /255, self.col["g"] /255, self.col["b"] /2
 
 if self.x ~= nil and self.y ~= nil and self.skin ~= nil then
 if self.looping ~= true then
-if mua.isboxinbox( xcc, ycc, sxcc, sycc, self.x, self.y, self.skin:getWidth(), self.skin:getHeight() ) == true or (xcc == 0 and ycc == 0 and sxcc == 0 and sycc == 0) then
+if mua.isboxinbox( xcc, ycc, sxcc, sycc, self.x, self.y, self.skin:getWidth() *self.sizex, self.skin:getHeight() *self.sizey ) == true or (xcc == 0 and ycc == 0 and sxcc == 0 and sycc == 0) then
 love.graphics.draw( self.skin, self.x, self.y, self.rot, self.sizex, self.sizey, 0, 0 )
    end
 end
