@@ -22,8 +22,8 @@ end
 
 function ENT.setcammotion( self, camman, x, y, ox, oy ) --set the entity the camera should be attached to ie the player
 	self.xsys, self.ysys, self.offsetx, self.offsety, self.cament = x, y, ox, oy, camman
-	self.x = self.cament[self.xsys]
-	self.y = self.cament[self.ysys]
+	self.x = self.cament[self.xsys] +self.offsetx
+	self.y = self.cament[self.ysys] +self.offsety
 end
 
 function ENT.setgravitymotion( self, gravatate, gravitylevelx, gravitylevely, snapradius )
