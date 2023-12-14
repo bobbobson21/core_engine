@@ -96,10 +96,10 @@ if v.velocityang ~= 0 then v.ang = v.ang +v.velocityang end
 
 if v.fadedata ~= nil then
 for l,w in pairs( v.fadedata ) do
-	local lifespan =  1 -( emittime() / v.lifetime ) 
-	local fadecode = ( ( lifespan* ( w.max -w.min ) ) +w.min )
-if w.min >= w.max then fadecode = ( ( lifespan* ( w.min -w.max ) ) +w.max ) end
-if w.min == w.max then fadecode = w.max end
+if w.starttime == nil then w.starttime = emittime() end
+if w.endtime == nil then w.endtime = v.lifetime end
+	local lifespan =  ( ( emittime() -w.starttime ) /( w.endtime -w.starttime ) ) 
+	local fadecode = ( w.max +lifespan *( w.min -w.max ) )
 	v[tostring( w.var )] = fadecode
    end
 end
