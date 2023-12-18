@@ -6,6 +6,7 @@ loadingsystem.register( "stage_1;XresourcesX", "loading mua, sound system, parti
 require( "mua" )
 require( "systems/soundsystem" )
 require( "systems/particlesystemandemiters" )
+require( "systems/navcore" )
 end)
 
 loadingsystem.register( "stage_2", "loading effects file and particle emiters", 31, function()

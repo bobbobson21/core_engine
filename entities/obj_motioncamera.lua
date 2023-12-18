@@ -3,7 +3,7 @@
 	
 function emitcam() return getentity( "obj_motioncamera", "cam" ) end
 
-function ENT.screenshakerandom( self, shaketime, shakeamout, minx, miny, maxx, maxy  )
+function ENT.screenshakerandom( self, shaketime, shakeamout, minx, miny, maxx, maxy )
 	self.runscreenshakerandom = true
 	self.screenshakerandomtime = math.floor( (shaketime /shakeamout) +0.50 )
 	self.screenshakerandomamount = shakeamout
@@ -119,7 +119,7 @@ function ENT.init( self )
 	self.xsys = "x"
 	self.iscam = true
 	self.lastdrawin = emittimeadd( 20 )
-	self.mindepth = -6
+	self.mindepth = -7
 	self.maxdepth = 2
 	self.x = 0
 	self.y = 0
