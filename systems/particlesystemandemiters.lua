@@ -90,13 +90,13 @@ end
 
 function particlesystem.loadresources()
 emitresources( "XimageX", "normalparicletexture", "textures/part.png" )
-emitresources( "XpartrenderX", "normalparicle", function( r, g, b, a, x, y, ang, size ) 
-love.graphics.setColor( r, g, b, a )
+emitresources( "XpartrenderX", "normalparicle", function( part ) 
+love.graphics.setColor( part.r, part.g, part.b, part.a )
 love.graphics.push()
-love.graphics.translate( x, y )
-love.graphics.rotate( ang )
-love.graphics.translate( -2 *size, -2 *size )
-love.graphics.rectangle("fill", 0, 0, 4 *size, 4 *size )
+love.graphics.translate( part.x, part.y )
+love.graphics.rotate( part.ang )
+love.graphics.translate( -2 *part.size, -2 *part.size )
+love.graphics.rectangle("fill", 0, 0, 4 *part.size, 4 *part.size )
 love.graphics.pop()
    end)
 end
@@ -163,7 +163,7 @@ love.graphics.draw( v.image, v.x, v.y, v.ang, v.size, v.size, v.image:getWidth()
 love.graphics.setColor( 1, 1, 1, 1 )
 end
 if v.image == nil and v.renderable ~= nil then
-v.renderable( v.r, v.g, v.b, v.a, v.x, v.y, v.ang, v.size )
+v.renderable( v )
    end
 end
 
