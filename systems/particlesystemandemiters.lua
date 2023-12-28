@@ -5,12 +5,19 @@ emithook( "think.bypass", "particlesystem_pausefix", function()
 for k,v in pairs( particlesystem.particles ) do
 if v.pauselifetime == nil then v.pauselifetime = v.lifetime -emittime() end
 	v.lifetime = emittime() +v.pauselifetime
+
 if v.fadedata ~= nil then
 for l,w in pairs( v.fadedata ) do
+
 if w.endtime ~= nil then
 if w.pauseendtime == nil then w.pauseendtime = w.endtime -emittime() end
-	w.endtime = emittime() +w.pauseendtime
-	        end
+	v.fadedata[l].endtime = emittime() +w.pauseendtime
+end
+if w.starttime ~= nil then
+if w.pausestarttime == nil then w.pausestarttime = w.starttime -emittime() end
+	v.fadedata[l].starttime = emittime() +w.pausestarttime
+end
+
 	     end
       end
    end
@@ -101,7 +108,7 @@ if particlesystem.particles == nil then particlesystem.particles = {} end
 if mua.tableisempty( particlesystem.particles ) == false then
 for k,v in pairs( particlesystem.particles ) do
 if v.active ~= 0 then
-	v.pauselifespan = nil
+	v.pauselifetime = nil
 runhook( "particle_think", {v} )
 end
 
@@ -113,6 +120,7 @@ if v.velocityang ~= 0 then v.ang = v.ang +v.velocityang end
 if v.fadedata ~= nil then
 for l,w in pairs( v.fadedata ) do
 	w.pauseendtime = nil
+	w.pausestarttime = nil
 if w.starttime == nil then w.starttime = emittime() end
 if w.endtime == nil then w.endtime = v.lifetime end
 	local lifespan =  math.min( ( emittime() -w.starttime ) /( w.endtime -w.starttime ), 1 ) 
